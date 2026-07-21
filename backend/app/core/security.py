@@ -39,8 +39,12 @@ def get_current_user(
             session.refresh(user)
             
         return user
+    except HTTPException:
+        raise
     except Exception as e:
+        print(f"[AUTH ERROR] Failed user authentication: {type(e).__name__}: {str(e)}")
         raise HTTPException(
             status_code=401,
-            detail=f"Invalid token or session expired: {str(e)}"
+            detail=f"Auth verification failed: {type(e).__name__} - {str(e)}"
         )
+
