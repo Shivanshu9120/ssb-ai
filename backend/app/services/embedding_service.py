@@ -4,14 +4,15 @@ from google import genai
 from google.genai import types
 from app.core.config import settings
 
-# Lazy-loaded FastEmbed model instance (768D BAAI/bge-base-en-v1.5)
+# Lazy-loaded FastEmbed model instance (BAAI/bge-small-en-v1.5)
 _fastembed_model: Optional[TextEmbedding] = None
 
 def _get_fastembed_model() -> TextEmbedding:
     global _fastembed_model
     if _fastembed_model is None:
-        _fastembed_model = TextEmbedding(model_name="BAAI/bge-base-en-v1.5")
+        _fastembed_model = TextEmbedding(model_name="BAAI/bge-small-en-v1.5")
     return _fastembed_model
+
 
 # Backup Gemini client
 gemini_client = genai.Client(
