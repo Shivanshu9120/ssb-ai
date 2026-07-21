@@ -1,0 +1,214 @@
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+:root {
+  --bg-deep: #0a0f0a;
+  --bg-dark: #0d1a0d;
+  --bg-mid: #111f11;
+  --army-green: #2d5a1b;
+  --army-bright: #4a8c2a;
+  --army-light: #6ab04c;
+  --army-pale: #8dc870;
+  --camo-tan: #8a7a5a;
+  --camo-brown: #5c4a2a;
+  --camo-dark: #1a2a0e;
+  --olive: #556b2f;
+  --khaki: #c8b89a;
+  --gold: #d4a843;
+  --gold-light: #f0c96c;
+  --saffron: #FF9933;
+  --white-india: #FFFFFF;
+  --india-green: #138808;
+  --navy-blue: #0a1628;
+  --sky-blue: #87CEEB;
+  --foreground: #e8f0e8;
+  --background: var(--bg-deep);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: 'Inter', Arial, Helvetica, sans-serif;
+  --font-mono: var(--font-geist-mono);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+/* ===== CAMOUFLAGE PATTERN ===== */
+.camo-pattern {
+  background-image: 
+    radial-gradient(ellipse 60px 40px at 10% 20%, #1a2a0e 0%, transparent 100%),
+    radial-gradient(ellipse 80px 60px at 30% 70%, #2d5a1b 0%, transparent 100%),
+    radial-gradient(ellipse 50px 70px at 60% 30%, #5c4a2a 0%, transparent 100%),
+    radial-gradient(ellipse 90px 50px at 80% 80%, #1a2a0e 0%, transparent 100%),
+    radial-gradient(ellipse 40px 80px at 50% 50%, #8a7a5a 0%, transparent 100%),
+    radial-gradient(ellipse 70px 40px at 20% 90%, #2d5a1b 0%, transparent 100%),
+    radial-gradient(ellipse 55px 55px at 90% 10%, #3d6b25 0%, transparent 100%);
+  background-color: #0d1a0d;
+}
+
+.camo-overlay {
+  background-image: 
+    radial-gradient(ellipse 80px 50px at 5% 15%, rgba(26,42,14,0.7) 0%, transparent 100%),
+    radial-gradient(ellipse 100px 70px at 25% 65%, rgba(45,90,27,0.5) 0%, transparent 100%),
+    radial-gradient(ellipse 60px 80px at 55% 25%, rgba(92,74,42,0.6) 0%, transparent 100%),
+    radial-gradient(ellipse 110px 60px at 75% 85%, rgba(26,42,14,0.7) 0%, transparent 100%),
+    radial-gradient(ellipse 50px 90px at 45% 55%, rgba(138,122,90,0.4) 0%, transparent 100%);
+}
+
+/* ===== JET ANIMATION ===== */
+@keyframes jetFly {
+  0% { transform: translateX(-200px) translateY(60px) rotate(-5deg); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateX(calc(100vw + 200px)) translateY(-40px) rotate(-5deg); opacity: 0; }
+}
+
+@keyframes smokeTrailSaffron {
+  0% { width: 0px; opacity: 0.9; }
+  100% { width: 400px; opacity: 0; }
+}
+
+@keyframes smokeTrailWhite {
+  0% { width: 0px; opacity: 0.9; }
+  100% { width: 380px; opacity: 0; }
+}
+
+@keyframes smokeTrailGreen {
+  0% { width: 0px; opacity: 0.9; }
+  100% { width: 360px; opacity: 0; }
+}
+
+@keyframes smokePuff {
+  0% { transform: scale(0.3) translateY(0); opacity: 0.9; }
+  100% { transform: scale(3) translateY(-30px); opacity: 0; }
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 20px rgba(74,140,42,0.3); }
+  50% { box-shadow: 0 0 50px rgba(74,140,42,0.7), 0 0 80px rgba(74,140,42,0.3); }
+}
+
+@keyframes marching {
+  0% { background-position: 0 0; }
+  100% { background-position: 60px 0; }
+}
+
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes tricolorPulse {
+  0%, 100% { opacity: 0.6; }
+  33% { opacity: 1; filter: drop-shadow(0 0 8px #FF9933); }
+  66% { opacity: 1; filter: drop-shadow(0 0 8px #138808); }
+}
+
+@keyframes rotateRadar {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes starfieldScroll {
+  0% { background-position: 0 0, 50px 100px, 100px 50px; }
+  100% { background-position: -200px -200px, -150px -100px, -100px -150px; }
+}
+
+/* ===== UTILITY CLASSES ===== */
+.font-military { font-family: 'Rajdhani', sans-serif; }
+.font-tech { font-family: 'Orbitron', sans-serif; }
+
+.animate-float { animation: floatUp 4s ease-in-out infinite; }
+.animate-pulse-glow { animation: pulseGlow 2.5s ease-in-out infinite; }
+.animate-fade-up { animation: fadeInUp 0.8s ease both; }
+.animate-slide-left { animation: slideInLeft 0.8s ease both; }
+.animate-slide-right { animation: slideInRight 0.8s ease both; }
+.animate-tricolor { animation: tricolorPulse 3s ease-in-out infinite; }
+.animate-blink { animation: blink 1.5s ease-in-out infinite; }
+
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.delay-400 { animation-delay: 0.4s; }
+.delay-500 { animation-delay: 0.5s; }
+
+/* ===== MILITARY BORDERS ===== */
+.border-army {
+  border: 1px solid rgba(74,140,42,0.4);
+}
+.border-army-glow {
+  border: 1px solid rgba(74,140,42,0.6);
+  box-shadow: 0 0 12px rgba(74,140,42,0.2), inset 0 0 12px rgba(74,140,42,0.05);
+}
+
+/* ===== TRICOLOR GRADIENT ===== */
+.tricolor-gradient {
+  background: linear-gradient(90deg, #FF9933 0%, #FF9933 33.3%, #FFFFFF 33.3%, #FFFFFF 66.6%, #138808 66.6%, #138808 100%);
+}
+.tricolor-text {
+  background: linear-gradient(90deg, #FF9933, #ffffff, #138808);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ===== GLASS CARD ===== */
+.glass-military {
+  background: rgba(13, 26, 13, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(74,140,42,0.25);
+}
+
+/* ===== DECORATIVE STRIPE ===== */
+.striped-border {
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(74,140,42,0.15),
+    rgba(74,140,42,0.15) 5px,
+    transparent 5px,
+    transparent 20px
+  );
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0d1a0d; }
+::-webkit-scrollbar-thumb { background: #2d5a1b; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #4a8c2a; }

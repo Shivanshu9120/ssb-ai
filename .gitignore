@@ -1,0 +1,30 @@
+# Environment & Secret files
+.env
+.env.*
+*.env
+backend/.env
+frontend/.env.local
+frontend/.env
+
+# Python / Backend
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+venv/
+.venv/
+env/
+
+# Node / Next.js / Frontend
+node_modules/
+.next/
+out/
+build/
+*.tsbuildinfo
+
+# OS & IDE files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
