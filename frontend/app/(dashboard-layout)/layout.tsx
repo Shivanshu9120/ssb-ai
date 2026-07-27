@@ -143,12 +143,14 @@ function DashboardLayoutInner({
     <div className="flex flex-col h-full bg-[#131313] text-zinc-300 border-r border-zinc-900 select-none">
       {/* Brand Header */}
       <div className="p-5 flex items-center gap-3 border-b border-zinc-900/60">
-        <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-300 flex items-center justify-center shadow-lg shadow-amber-500/10">
-          <Ship className="w-5 h-5 text-black" />
-        </div>
+        <img
+          src="/SSBAI-logo.png"
+          alt="SSB AI Logo"
+          className="w-10 h-10 object-contain rounded-xl shadow-lg border border-amber-500/20"
+        />
         <div>
           <span className="font-extrabold text-base tracking-tight text-white block">
-            Sea Master
+            SSB Mentor AI
           </span>
           <span className="text-[10px] text-amber-500 font-semibold uppercase tracking-wider block -mt-1">
             SSB AI Coach

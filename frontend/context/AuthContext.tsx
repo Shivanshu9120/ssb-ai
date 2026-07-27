@@ -32,13 +32,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const pathname = usePathname();
 
+  const PUBLIC_ROUTES = ['/', '/login', '/signup', '/about', '/contact', '/terms', '/privacy', '/disclaimer'];
+  const isPublicRoute = PUBLIC_ROUTES.some(route => pathname === route || (route !== '/' && pathname.startsWith(route)));
+
   const fetchProfile = async () => {
     try {
       const data = await apiService.getProfile();
       setProfile(data);
       
       // If user profile is not populated, redirect them to the onboarding questionnaire
-      const isPublicRoute = ['/', '/login', '/signup'].includes(pathname);
       if (!data.profile && !isPublicRoute && pathname !== '/onboarding') {
         router.push('/onboarding');
       }
@@ -71,7 +73,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       } else {
         setProfile(null);
         setLoading(false);
-        const isPublicRoute = ['/', '/login', '/signup'].includes(pathname);
         if (!isPublicRoute) {
           router.push('/login');
         }

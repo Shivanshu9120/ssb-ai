@@ -73,9 +73,11 @@ export default function Signup() {
       
       <div className="w-full max-w-md p-8 rounded-2xl border border-slate-900 bg-slate-900/20 backdrop-blur-md shadow-2xl relative">
         <div className="flex flex-col items-center gap-2 mb-8 text-center">
-          <div className="w-10 h-10 rounded-lg bg-indigo-600 flex items-center justify-center font-bold text-xl shadow-lg shadow-indigo-600/30">
-            S
-          </div>
+          <img
+            src="/SSBAI-logo.png"
+            alt="SSB AI Logo"
+            className="w-12 h-12 object-contain rounded-xl shadow-lg border border-amber-500/20 mb-1"
+          />
           <h2 className="text-2xl font-extrabold tracking-tight text-white">Create Account</h2>
           <p className="text-xs text-slate-400">Join the premium SSB AI prep platform</p>
         </div>

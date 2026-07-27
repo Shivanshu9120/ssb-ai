@@ -18,6 +18,7 @@ import {
   ChevronDown,
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
+import Footer from '@/components/Footer';
 
 /* ─────────────────────────── JET SVG ─────────────────────────── */
 function JetSVG({ style }: { style?: React.CSSProperties }) {
@@ -214,6 +215,221 @@ export default function Home() {
     },
   ];
 
+/* ─────────────────── SELF-EXECUTING HERO MOCKUP WALKTHROUGH ─────────────────── */
+function HeroWalkthroughMockup() {
+  const scenarios = [
+    {
+      arm: 'Army',
+      topic: 'PPDT & Group Discussion',
+      query: 'What are the key OLQs tested in PPDT Discussion?',
+      response: 'Key OLQs tested: 1. Effective Intelligence (clear story theme), 2. Social Adaptability (active listening), 3. Group Influence.',
+      olqBadges: ['Effective Intelligence 95%', 'Social Adaptability 92%', 'Group Influence 98%'],
+      missions: '15 / 20',
+      progress: 75,
+    },
+    {
+      arm: 'Air Force',
+      topic: 'TAT & Psychological Testing',
+      query: 'How to write a high-scoring TAT story for picture prompts?',
+      response: 'Focus on a proactive hero, logical problem-solving, and positive resolution. Demonstrate Officer Like Qualities without artificial fixes.',
+      olqBadges: ['Reasoning Ability 94%', 'Organising Ability 96%', 'Initiative 97%'],
+      missions: '16 / 20',
+      progress: 80,
+    },
+    {
+      arm: 'Navy',
+      topic: 'SRT & Situation Handling',
+      query: 'What is the ideal 3-step structure for SRT solutions?',
+      response: 'Use the proven pattern: 1. Immediate Action, 2. Tactical Solution, 3. Task Accomplished. Keep responses concise and action-oriented.',
+      olqBadges: ['Decision Making 96%', 'Sense of Responsibility 94%', 'Courage 95%'],
+      missions: '17 / 20',
+      progress: 85,
+    },
+  ];
+
+  const [scenarioIdx, setScenarioIdx] = useState(0);
+  const [typedQuery, setTypedQuery] = useState('');
+  const [isTyping, setIsTyping] = useState(true);
+  const [isThinking, setIsThinking] = useState(false);
+  const [typedResponse, setTypedResponse] = useState('');
+  const [showBadges, setShowBadges] = useState(false);
+
+  const current = scenarios[scenarioIdx];
+
+  useEffect(() => {
+    let timeoutId: any;
+    const fullQuery = current.query;
+    const fullResponse = current.response;
+
+    setTypedQuery('');
+    setIsTyping(true);
+    setIsThinking(false);
+    setTypedResponse('');
+    setShowBadges(false);
+
+    let charIdx = 0;
+
+    const typeQueryInterval = setInterval(() => {
+      if (charIdx < fullQuery.length) {
+        setTypedQuery(fullQuery.slice(0, charIdx + 1));
+        charIdx++;
+      } else {
+        clearInterval(typeQueryInterval);
+        setIsTyping(false);
+        setIsThinking(true);
+
+        timeoutId = setTimeout(() => {
+          setIsThinking(false);
+
+          let resIdx = 0;
+          const streamResponseInterval = setInterval(() => {
+            if (resIdx < fullResponse.length) {
+              setTypedResponse(fullResponse.slice(0, resIdx + 3));
+              resIdx += 3;
+            } else {
+              setTypedResponse(fullResponse);
+              clearInterval(streamResponseInterval);
+              setShowBadges(true);
+
+              timeoutId = setTimeout(() => {
+                setScenarioIdx((prev) => (prev + 1) % scenarios.length);
+              }, 4000);
+            }
+          }, 25);
+        }, 1000);
+      }
+    }, 40);
+
+    return () => {
+      clearInterval(typeQueryInterval);
+      if (timeoutId) clearTimeout(timeoutId);
+    };
+  }, [scenarioIdx]);
+
+  return (
+    <div className="relative w-full max-w-sm">
+      <div
+        className="relative rounded-3xl overflow-hidden shadow-2xl"
+        style={{
+          background: 'rgba(13,26,13,0.85)',
+          backdropFilter: 'blur(20px)',
+          border: '1.5px solid rgba(74,140,42,0.35)',
+          boxShadow: '0 25px 80px rgba(0,0,0,0.6), 0 0 50px rgba(74,140,42,0.15)',
+        }}
+      >
+        <div className="absolute inset-0 camo-overlay opacity-25" />
+        <div className="relative h-1.5 w-full tricolor-gradient" />
+        <div className="relative p-6 z-10">
+          {/* Header Bar — NO VERSION NUMBER */}
+          <div className="flex items-center justify-between mb-4 pb-3 border-b border-emerald-900/40">
+            <div className="flex items-center gap-2.5">
+              <img
+                src="/SSBAI-logo.png"
+                alt="SSB AI Logo"
+                className="w-8 h-8 object-contain rounded-lg shadow-md border border-emerald-500/30"
+              />
+              <div>
+                <p className="text-xs font-bold text-white tracking-wide" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
+                  SSB MENTOR AI
+                </p>
+                <div className="flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="text-[9px] font-semibold text-emerald-400 tracking-wider uppercase">● LIVE DEMO</span>
+                </div>
+              </div>
+            </div>
+            <div className="px-2 py-0.5 rounded-full text-[9px] font-bold tracking-wide uppercase bg-emerald-950/80 border border-emerald-500/30 text-emerald-400">
+              {current.topic}
+            </div>
+          </div>
+
+          {/* Interactive Chat Content */}
+          <div className="space-y-3 mb-5 min-h-[170px]">
+            {/* User Query Box */}
+            <div className="rounded-xl p-3 text-xs leading-relaxed ml-2" style={{ background: 'rgba(26,42,14,0.85)', border: '1px solid rgba(74,140,42,0.25)', color: '#e0ebd0' }}>
+              <span className="font-bold text-emerald-400 block mb-0.5">You →</span>
+              <p className="font-medium text-emerald-100">
+                {typedQuery}
+                {isTyping && <span className="inline-block w-1.5 h-3.5 ml-1 bg-emerald-400 animate-pulse align-middle" />}
+              </p>
+            </div>
+
+            {/* AI Thinking State */}
+            {isThinking && (
+              <div className="rounded-xl p-3 text-xs flex items-center gap-2 animate-pulse" style={{ background: 'rgba(74,140,42,0.12)', border: '1px solid rgba(74,140,42,0.25)', color: '#8dc870' }}>
+                <div className="w-3.5 h-3.5 rounded-full border-2 border-emerald-400 border-t-transparent animate-spin" />
+                <span>Evaluating 15 Officer Like Qualities...</span>
+              </div>
+            )}
+
+            {/* AI Response Box */}
+            {typedResponse && (
+              <div className="rounded-xl p-3 text-xs leading-relaxed" style={{ background: 'rgba(74,140,42,0.12)', border: '1px solid rgba(74,140,42,0.25)', color: '#b0d8a0' }}>
+                <span className="font-bold text-white block mb-1">🎖 SSB Mentor AI</span>
+                <p>{typedResponse}</p>
+
+                {showBadges && (
+                  <div className="flex flex-wrap gap-1.5 mt-2.5 pt-2 border-t border-emerald-800/30">
+                    {current.olqBadges.map((badge) => (
+                      <span key={badge} className="px-2 py-0.5 rounded-md text-[9px] font-bold bg-emerald-900/60 text-emerald-300 border border-emerald-500/30">
+                        ✓ {badge}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Defence Service Arm Cards */}
+          <div className="grid grid-cols-3 gap-2 mb-4">
+            {[
+              { name: 'Army', emoji: '🪖', color: '#4a8c2a' },
+              { name: 'Navy', emoji: '⚓', color: '#2a6b8c' },
+              { name: 'Air Force', emoji: '✈️', color: '#8c6b2a' },
+            ].map((arm) => {
+              const isActive = current.arm === arm.name;
+              return (
+                <div
+                  key={arm.name}
+                  className={`rounded-lg py-2 text-center transition-all duration-300 ${
+                    isActive ? 'scale-105 shadow-md shadow-emerald-950' : 'opacity-60'
+                  }`}
+                  style={{
+                    background: isActive ? `${arm.color}35` : `${arm.color}15`,
+                    border: isActive ? `1.5px solid ${arm.color}` : `1px solid ${arm.color}40`,
+                  }}
+                >
+                  <div className="text-base">{arm.emoji}</div>
+                  <div className="text-[9px] mt-0.5 font-bold tracking-wider uppercase" style={{ color: arm.color, fontFamily: 'Rajdhani, sans-serif' }}>
+                    {arm.name}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Practice Missions Progress */}
+          <div className="rounded-xl p-3" style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(74,140,42,0.15)' }}>
+            <div className="flex justify-between text-[10px] mb-2 font-mono" style={{ color: '#5a7a5a' }}>
+              <span>DAILY MISSIONS</span>
+              <span className="font-bold" style={{ color: '#6ab04c' }}>{current.missions}</span>
+            </div>
+            <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(74,140,42,0.15)' }}>
+              <div
+                className="h-full rounded-full transition-all duration-700"
+                style={{ width: `${current.progress}%`, background: 'linear-gradient(90deg, #2d5a1b, #6ab04c)', boxShadow: '0 0 8px rgba(74,140,42,0.6)' }}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="absolute -top-3 -right-3 w-6 h-6 rounded-full animate-pulse-glow" style={{ background: 'rgba(74,140,42,0.6)' }} />
+      <div className="absolute -bottom-2 -left-2 w-4 h-4 rounded-full" style={{ background: 'rgba(255,153,51,0.6)' }} />
+    </div>
+  );
+}
+
   return (
     <div className="min-h-screen text-slate-100 font-sans" style={{ background: 'var(--bg-deep)' }}>
 
@@ -229,16 +445,17 @@ export default function Home() {
       >
         <div className="tricolor-gradient h-0.5 w-full" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-lg shadow-lg font-tech relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #2d5a1b, #4a8c2a)', boxShadow: '0 0 20px rgba(74,140,42,0.5)' }}>
-              <span className="relative z-10">S</span>
-              <div className="absolute inset-0 camo-overlay opacity-40" />
-            </div>
-            <div>
-              <span className="font-extrabold text-lg tracking-tight block leading-none" style={{ background: 'linear-gradient(90deg, #8dc870, #ffffff, #6ab04c)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', fontFamily: 'Rajdhani, sans-serif' }}>
+          <div className="flex items-center gap-3">
+            <img
+              src="/SSBAI-logo.png"
+              alt="SSB AI Logo"
+              className="w-11 h-11 object-contain rounded-xl shadow-lg shadow-emerald-950/40 border border-emerald-500/30"
+            />
+            <div className="flex flex-col justify-center">
+              <span className="font-extrabold text-xl sm:text-2xl tracking-tight block leading-none" style={{ background: 'linear-gradient(90deg, #8dc870, #ffffff, #6ab04c)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', fontFamily: 'Rajdhani, sans-serif' }}>
                 SSB Mentor AI
               </span>
-              <span className="text-[9px] tracking-widest uppercase" style={{ color: '#4a8c2a' }}>Jai Hind 🇮🇳</span>
+              <span className="text-[10px] font-bold tracking-widest uppercase mt-0.5 leading-none" style={{ color: '#4a8c2a' }}>Jai Hind 🇮🇳</span>
             </div>
           </div>
 
@@ -360,61 +577,9 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Right visual card */}
+            {/* Right visual card - Self-executing Interactive Walkthrough Mockup */}
             <div className="flex-1 flex justify-center lg:justify-end animate-slide-right delay-300">
-              <div className="relative w-full max-w-sm">
-                <div
-                  className="relative rounded-3xl overflow-hidden"
-                  style={{ background: 'rgba(13,26,13,0.85)', backdropFilter: 'blur(20px)', border: '1.5px solid rgba(74,140,42,0.35)', boxShadow: '0 25px 80px rgba(0,0,0,0.6), 0 0 50px rgba(74,140,42,0.15)' }}
-                >
-                  <div className="absolute inset-0 camo-overlay opacity-25" />
-                  <div className="relative h-1.5 w-full tricolor-gradient" />
-                  <div className="relative p-6 z-10">
-                    <div className="flex items-center justify-between mb-5">
-                      <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-tech font-bold" style={{ background: 'rgba(74,140,42,0.3)', border: '1px solid rgba(74,140,42,0.5)', color: '#8dc870' }}>AI</div>
-                        <div>
-                          <p className="text-xs font-bold text-white" style={{ fontFamily: 'Rajdhani, sans-serif' }}>SSB MENTOR AI</p>
-                          <p className="text-[10px]" style={{ color: '#4a8c2a' }}>● ONLINE</p>
-                        </div>
-                      </div>
-                      <div className="text-xs" style={{ color: '#5a7a5a', fontFamily: 'monospace' }}>v2.1.0</div>
-                    </div>
-
-                    <div className="space-y-3 mb-5">
-                      <div className="rounded-xl p-3 text-xs leading-relaxed" style={{ background: 'rgba(74,140,42,0.1)', border: '1px solid rgba(74,140,42,0.2)', color: '#a0c090' }}>
-                        <span className="font-bold text-white block mb-1">🎖 SSB Mentor</span>
-                        "Effective leadership in the Officer Selection Board is assessed through your spontaneity, planning, and sense of responsibility during GTO tasks…"
-                      </div>
-                      <div className="rounded-xl p-3 text-xs ml-4 leading-relaxed" style={{ background: 'rgba(26,42,14,0.8)', border: '1px solid rgba(74,140,42,0.15)', color: '#7a9a7a' }}>
-                        <span className="font-bold" style={{ color: '#6ab04c' }}>You →</span>
-                        {' '}What are the key OLQs tested in Group Discussion?
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-3 gap-2 mb-5">
-                      {[{ emoji: '🪖', name: 'Army', color: '#4a8c2a' }, { emoji: '⚓', name: 'Navy', color: '#2a6b8c' }, { emoji: '✈️', name: 'Air Force', color: '#8c6b2a' }].map(({ emoji, name, color }) => (
-                        <div key={name} className="rounded-lg py-2 text-center" style={{ background: `${color}18`, border: `1px solid ${color}40` }}>
-                          <div className="text-base">{emoji}</div>
-                          <div className="text-[9px] mt-0.5 font-bold tracking-wider uppercase" style={{ color, fontFamily: 'Rajdhani, sans-serif' }}>{name}</div>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="rounded-xl p-3" style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(74,140,42,0.15)' }}>
-                      <div className="flex justify-between text-[10px] mb-2" style={{ color: '#5a7a5a', fontFamily: 'monospace' }}>
-                        <span>DAILY MISSIONS</span>
-                        <span style={{ color: '#6ab04c' }}>14 / 20</span>
-                      </div>
-                      <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(74,140,42,0.15)' }}>
-                        <div className="h-full rounded-full" style={{ width: '70%', background: 'linear-gradient(90deg, #2d5a1b, #6ab04c)', boxShadow: '0 0 8px rgba(74,140,42,0.6)' }} />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="absolute -top-3 -right-3 w-6 h-6 rounded-full animate-pulse-glow" style={{ background: 'rgba(74,140,42,0.6)' }} />
-                <div className="absolute -bottom-2 -left-2 w-4 h-4 rounded-full" style={{ background: 'rgba(255,153,51,0.6)' }} />
-              </div>
+              <HeroWalkthroughMockup />
             </div>
           </div>
         </div>
@@ -659,26 +824,7 @@ export default function Home() {
       </section>
 
       {/* ──────── FOOTER ──────── */}
-      <footer className="py-10 relative" style={{ borderTop: '1px solid rgba(74,140,42,0.15)', background: '#0a0f0a' }}>
-        <div className="absolute bottom-0 left-0 right-0 flex h-0.5">
-          <div className="flex-1" style={{ background: '#FF9933' }} />
-          <div className="flex-1" style={{ background: '#ffffff' }} />
-          <div className="flex-1" style={{ background: '#138808' }} />
-        </div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="flex items-center justify-center gap-2 mb-3">
-            <div className="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-sm font-tech" style={{ background: 'linear-gradient(135deg, #2d5a1b, #4a8c2a)', boxShadow: '0 0 12px rgba(74,140,42,0.4)' }}>S</div>
-            <span className="font-military font-bold tracking-wider" style={{ color: '#8dc870' }}>SSB MENTOR AI</span>
-          </div>
-          <p className="text-xs mb-1" style={{ color: '#3a5a3a' }}>
-            © {new Date().getFullYear()} SSB Mentor AI. All rights reserved. | Jai Hind 🇮🇳
-          </p>
-          <p className="text-xs" style={{ color: '#2a3a2a' }}>
-            Powered by advanced AI · Trusted by defence aspirants across India
-          </p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
