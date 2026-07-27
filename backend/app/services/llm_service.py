@@ -26,16 +26,43 @@ OPENROUTER_FALLBACK_MODELS = [
 
 class LLMService:
     @staticmethod
-    def generate_chat_stream(prompt: str, context_str: str = "", custom_api_key: str = None):
+    def generate_chat_stream(prompt: str, context_str: str = "", history: list = None, custom_api_key: str = None):
         """
-        Generates a streaming response with automatic multi-provider fallback:
+        Generates a streaming response with automatic multi-provider fallback and multi-turn thread history:
         1. Gemini 2.0 Flash (using custom key if provided, or default GEMINI_API_KEY)
         2. Groq Free API (if GROQ_API_KEY is configured)
         3. OpenRouter Free Models
         """
-        full_prompt = prompt
+        final_prompt = prompt
         if context_str:
-            full_prompt = f"Context from Knowledge Base:\n{context_str}\n\nCandidate Question:\n{prompt}"
+            final_prompt = f"Context from Knowledge Base:\n{context_str}\n\nCandidate Question:\n{prompt}"
+
+        # Construct Gemini multi-turn contents array
+        gemini_contents = []
+        if history:
+            for item in history:
+                gemini_role = "model" if item["role"] == "assistant" else "user"
+                gemini_contents.append({
+                    "role": gemini_role,
+                    "parts": [{"text": item["message"]}]
+                })
+        gemini_contents.append({
+            "role": "user",
+            "parts": [{"text": final_prompt}]
+        })
+
+        # Construct OpenAI-compatible messages array for Groq and OpenRouter
+        openai_messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+        if history:
+            for item in history:
+                openai_messages.append({
+                    "role": item["role"],
+                    "content": item["message"]
+                })
+        openai_messages.append({
+            "role": "user",
+            "content": final_prompt
+        })
 
         # -------------------------------------------------------------
         # Provider 1: Gemini 2.0 Flash
@@ -50,7 +77,7 @@ class LLMService:
 
             response = active_client.models.generate_content_stream(
                 model="models/gemini-2.0-flash",
-                contents=full_prompt,
+                contents=gemini_contents,
                 config=types.GenerateContentConfig(
                     system_instruction=SYSTEM_PROMPT,
                 )
@@ -72,7 +99,7 @@ class LLMService:
                     continue
 
             metadata = {
-                "prompt_tokens": prompt_tokens or len(full_prompt) // 4,
+                "prompt_tokens": prompt_tokens or len(final_prompt) // 4,
                 "completion_tokens": completion_tokens or 100,
                 "model": "gemini-2.0-flash"
             }
@@ -93,10 +120,7 @@ class LLMService:
                 }
                 body = {
                     "model": "llama-3.3-70b-versatile",
-                    "messages": [
-                        {"role": "system", "content": SYSTEM_PROMPT},
-                        {"role": "user", "content": full_prompt}
-                    ]
+                    "messages": openai_messages
                 }
                 res = requests.post("https://api.groq.com/openai/v1/chat/completions", headers=headers, json=body, timeout=20)
                 if res.status_code == 200:
@@ -105,7 +129,7 @@ class LLMService:
                     yield f"data: {json.dumps({'text': answer})}\n\n"
                     usage = data.get("usage", {})
                     metadata = {
-                        "prompt_tokens": usage.get("prompt_tokens", len(full_prompt) // 4),
+                        "prompt_tokens": usage.get("prompt_tokens", len(final_prompt) // 4),
                         "completion_tokens": usage.get("completion_tokens", len(answer) // 4),
                         "model": "llama-3.3-70b-versatile (Groq)"
                     }
@@ -132,10 +156,7 @@ class LLMService:
 
                 body = {
                     "model": model,
-                    "messages": [
-                        {"role": "system", "content": SYSTEM_PROMPT},
-                        {"role": "user", "content": full_prompt}
-                    ],
+                    "messages": openai_messages,
                     "stream": False
                 }
 
@@ -147,7 +168,7 @@ class LLMService:
                     
                     usage = data.get("usage", {})
                     metadata = {
-                        "prompt_tokens": usage.get("prompt_tokens", len(full_prompt) // 4),
+                        "prompt_tokens": usage.get("prompt_tokens", len(final_prompt) // 4),
                         "completion_tokens": usage.get("completion_tokens", len(answer) // 4),
                         "model": model
                     }

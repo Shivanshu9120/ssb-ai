@@ -95,6 +95,17 @@ async def start_chat_stream(
         if not chat or chat.user_id != current_user.id:
             raise HTTPException(status_code=404, detail="Chat conversation not found.")
 
+    # 2.5 Extract previous thread message history (up to last 6 messages / 3 interaction turns)
+    history = []
+    if chat and chat.messages:
+        sorted_messages = sorted(chat.messages, key=lambda m: m.created_at)
+        recent_messages = sorted_messages[-6:]
+        for m in recent_messages:
+            history.append({
+                "role": m.role,
+                "message": m.message
+            })
+
     # 3. Add user prompt to messages database
     user_message = Message(
         chat_id=chat_id,
@@ -104,11 +115,18 @@ async def start_chat_stream(
     session.add(user_message)
     session.commit()
 
-    # 4. Semantically search context chunks
+    # 4. Context-aware semantic RAG search
+    rag_query = request.message
+    # If the user prompt is brief (< 6 words) and we have prior thread history, combine with recent prompt for vector search
+    if history and len(request.message.split()) < 6:
+        prior_user_prompts = [h["message"] for h in history if h["role"] == "user"]
+        if prior_user_prompts:
+            rag_query = f"{prior_user_prompts[-1]} {request.message}"
+
     context_str = ""
     citations = []
     try:
-        chunks = Retriever.retrieve(request.message, top_k=5)
+        chunks = Retriever.retrieve(rag_query, top_k=5)
         context_parts = []
         for i, chunk in enumerate(chunks, 1):
             context_parts.append(f"[{i}] Source: {chunk['document']} (Page {chunk['page']})\nContent: {chunk['text']}")
@@ -139,7 +157,12 @@ async def start_chat_stream(
 
         # Collect all SSE events from the blocking LLM call in a thread
         def run_llm():
-            return list(LLMService.generate_chat_stream(request.message, context_str, custom_api_key=x_gemini_api_key))
+            return list(LLMService.generate_chat_stream(
+                request.message,
+                context_str,
+                history=history,
+                custom_api_key=x_gemini_api_key
+            ))
 
         sse_events = await asyncio.to_thread(run_llm)
 
