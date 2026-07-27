@@ -23,7 +23,8 @@ import {
   Cpu,
   AlertTriangle,
   User,
-  CreditCard
+  CreditCard,
+  FileText
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { useChat } from '@/context/ChatContext';
@@ -88,6 +89,7 @@ function DashboardLayoutInner({
     { name: 'Home', href: '/dashboard', icon: Home },
     { name: 'Timeline', href: '/timeline', icon: Calendar },
     { name: 'Study', href: '/study', icon: BookOpen },
+    { name: 'PIQ Form', href: '/piq', icon: FileText },
     { name: 'Profile', href: '/profile', icon: User },
     { name: 'Billing', href: '/billing', icon: CreditCard },
   ];
@@ -106,6 +108,7 @@ function DashboardLayoutInner({
     if (pathname.startsWith('/timeline')) return 'SSB Journey Timeline';
     if (pathname.startsWith('/study')) return 'Study Hub';
     if (pathname.startsWith('/profile')) return 'Candidate Profile';
+    if (pathname.startsWith('/piq')) return 'PIQ Questionnaire';
     if (pathname.startsWith('/billing')) return 'Billing & Subscription';
     return 'Sea Master';
   };

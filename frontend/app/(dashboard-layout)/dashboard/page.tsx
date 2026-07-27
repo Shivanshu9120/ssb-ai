@@ -18,7 +18,9 @@ import {
   BookOpen,
   User,
   Settings,
-  AlertTriangle
+  AlertTriangle,
+  FileText,
+  ChevronRight
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { useChat } from '@/context/ChatContext';
@@ -26,7 +28,7 @@ import { apiService } from '@/services/api';
 import NamespaceExplorer from './NamespaceExplorer';
 
 export default function Dashboard() {
-  const { user, profile, loading: authLoading, isAdmin } = useAuth();
+  const { user, profile, loading: authLoading, isAdmin, piqCompletedSteps } = useAuth();
   const { chats, loadingHistory, deleteChat, loadChatHistory } = useChat();
   const [usage, setUsage] = useState<any[]>([]);
   const [loadingData, setLoadingData] = useState(true);
@@ -185,36 +187,64 @@ export default function Dashboard() {
       {/* Grid: Profile detail card & Metrics overview */}
       <div className="grid lg:grid-cols-4 gap-6">
         
-        {/* Left Column Profile details card */}
+        {/* Left Column — PIQ Profile Card */}
         <div className="lg:col-span-1 p-6 rounded-2xl bg-[#131313] border border-zinc-900 space-y-5">
           <h3 className="text-xs font-bold text-amber-500 uppercase tracking-widest flex items-center gap-1.5">
-            <Award className="w-4 h-4" /> Profile Info
+            <FileText className="w-4 h-4" /> PIQ Profile
           </h3>
-          
-          <div className="space-y-4 text-xs">
-            <div>
-              <span className="block text-[10px] text-zinc-500 uppercase font-semibold">Service Branch</span>
-              <span className="font-bold text-zinc-100">{profile?.profile?.exam || 'N/A'}</span>
+
+          {/* PIQ Completion Progress */}
+          <div>
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="text-[10px] text-zinc-500 uppercase font-semibold">Completion</span>
+              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                piqCompletedSteps === 5 ? 'bg-green-500/10 text-green-400 border border-green-500/20' :
+                piqCompletedSteps > 0 ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' :
+                'bg-zinc-800 text-zinc-500 border border-zinc-700'
+              }`}>
+                {Math.round((piqCompletedSteps / 5) * 100)}%
+              </span>
             </div>
-            {profile?.profile?.branch && (
+            <div className="w-full bg-zinc-900 h-1.5 rounded-full overflow-hidden mb-2">
+              <div
+                className="h-full bg-gradient-to-r from-amber-500 to-amber-400 rounded-full transition-all duration-500"
+                style={{ width: `${Math.round((piqCompletedSteps / 5) * 100)}%` }}
+              />
+            </div>
+            <p className="text-[10px] text-zinc-500">
+              {piqCompletedSteps === 0 ? 'No sections filled yet' :
+               piqCompletedSteps === 5 ? 'PIQ fully submitted ✓' :
+               `${piqCompletedSteps} of 5 sections complete`}
+            </p>
+          </div>
+
+          {/* Profile fields from PIQ */}
+          <div className="space-y-3 text-xs">
+            <div>
+              <span className="block text-[10px] text-zinc-500 uppercase font-semibold">Target Service</span>
+              <span className="font-bold text-zinc-100">{profile?.piq_profile?.exam || 'Not set'}</span>
+            </div>
+            <div>
+              <span className="block text-[10px] text-zinc-500 uppercase font-semibold">Preparation Level</span>
+              <span className="inline-flex items-center px-2 py-0.5 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-500 font-bold mt-0.5">
+                {profile?.piq_profile?.level || 'Beginner'}
+              </span>
+            </div>
+            {profile?.piq_profile?.nature_of_commission && (
               <div>
-                <span className="block text-[10px] text-zinc-500 uppercase font-semibold">Entry / Branch</span>
-                <span className="font-bold text-zinc-200">{profile.profile.branch}</span>
+                <span className="block text-[10px] text-zinc-500 uppercase font-semibold">Commission Type</span>
+                <span className="font-bold text-zinc-200">{profile.piq_profile.nature_of_commission}</span>
               </div>
             )}
-            <div>
-              <span className="block text-[10px] text-zinc-500 uppercase font-semibold">Attempt Count</span>
-              <span className="font-bold text-zinc-200">
-                {profile?.profile?.attempt === 1 ? '1st (Fresher)' : `${profile?.profile?.attempt} Attempts (Repeater)`}
-              </span>
-            </div>
-            <div>
-              <span className="block text-[10px] text-zinc-500 uppercase font-semibold">Coaching Level</span>
-              <span className="inline-flex items-center px-2 py-0.5 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-500 font-bold mt-1">
-                {profile?.profile?.level || 'Beginner'}
-              </span>
-            </div>
           </div>
+
+          {/* View/Edit PIQ button */}
+          <Link href="/piq" className="flex items-center justify-between w-full px-3 py-2.5 rounded-xl border border-zinc-800 bg-zinc-900/40 hover:border-amber-500/30 hover:bg-amber-500/5 transition-all group">
+            <span className="text-xs font-semibold text-zinc-400 group-hover:text-amber-400 transition-colors">
+              {piqCompletedSteps === 0 ? 'Start PIQ Form' : 'View / Edit PIQ'}
+            </span>
+            <ChevronRight className="w-3.5 h-3.5 text-zinc-600 group-hover:text-amber-500 transition-colors" />
+          </Link>
         </div>
 
         {/* Right Columns Quick Metrics */}

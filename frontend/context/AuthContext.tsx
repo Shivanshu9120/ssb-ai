@@ -12,6 +12,7 @@ interface AuthContextType {
   loading: boolean;
   profile: any | null;
   isAdmin: boolean;
+  piqCompletedSteps: number;
   fetchProfile: () => Promise<void>;
   signOut: () => Promise<void>;
 }
@@ -27,6 +28,7 @@ const AuthContext = createContext<AuthContextType>({
   loading: true,
   profile: null,
   isAdmin: false,
+  piqCompletedSteps: 0,
   fetchProfile: async () => {},
   signOut: async () => {},
 });
@@ -46,9 +48,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       const data = await apiService.getProfile();
       setProfile(data);
-      
-      // If user profile is not populated, redirect them to the onboarding questionnaire
-      if (!data.profile && !isPublicRoute && pathname !== '/onboarding') {
+
+      // Only redirect to onboarding on first-ever login (no PIQ profile at all).
+      // Dashboard is ALWAYS accessible — PIQ is optional.
+      if (!data.piq_profile && !isPublicRoute && pathname !== '/onboarding') {
         router.push('/onboarding');
       }
     } catch (err: any) {
@@ -102,9 +105,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const isAdmin = !!user && ADMIN_EMAILS.includes((user.email ?? '').toLowerCase());
+  const piqCompletedSteps: number = profile?.piq_profile?.completed_steps ?? 0;
 
   return (
-    <AuthContext.Provider value={{ user, session, loading, profile, isAdmin, fetchProfile, signOut }}>
+    <AuthContext.Provider value={{ user, session, loading, profile, isAdmin, piqCompletedSteps, fetchProfile, signOut }}>
       {children}
     </AuthContext.Provider>
   );

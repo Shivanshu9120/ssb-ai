@@ -18,6 +18,129 @@ async function getHeaders(isMultipart = false) {
   return headers;
 }
 
+// ---------------------------------------------------------------------------
+// PIQ Data Types
+// ---------------------------------------------------------------------------
+
+export interface ResidenceData {
+  place: string;
+  district: string;
+  state: string;
+  population: string;
+}
+
+export interface PermanentResidenceData extends ResidenceData {
+  is_district_hq: boolean;
+}
+
+export interface FamilyMember {
+  relation: string;
+  education: string;
+  occupation: string;
+  income: string;
+}
+
+export interface AcademicRecord {
+  qualification: string;
+  institution: string;
+  board_university: string;
+  year: string;
+  division_marks: string;
+  medium: string;
+  boarder_day: string;
+  achievement: string;
+}
+
+export interface NCCDetail {
+  total_training: string;
+  wing: string;
+  sub_unit: string;
+  certificate: string;
+}
+
+export interface SportRecord {
+  game: string;
+  date_from?: string;
+  date_to?: string;
+  duration: string;
+  represented: string;
+  achievement: string;
+}
+
+export interface ExtracurricularRecord {
+  activity_group: string;
+  duration: string;
+  achievement: string;
+}
+
+export interface InterviewRecord {
+  sl_no: number;
+  type_of_entry: string;
+  ssb_place: string;
+  date: string;
+  chest_batch_no: string;
+  result?: 'Screen Out' | 'Conference Out' | 'Recommended' | string;
+}
+
+export interface PIQData {
+  // Completion
+  completed_steps?: number;
+  is_submitted?: boolean;
+  // Q1
+  selection_board?: string;
+  batch_no?: string;
+  chest_no?: string;
+  upsc_roll_no?: string;
+  // Q2 & Q3
+  full_name?: string;
+  father_name?: string;
+  // Q4
+  max_residence?: ResidenceData;
+  parents_residence?: ResidenceData;
+  permanent_residence?: PermanentResidenceData;
+  // Q5
+  state_district?: string;
+  religion?: string;
+  category?: string;
+  mother_tongue?: string;
+  date_of_birth?: string;
+  marital_status?: string;
+  // Q6
+  parents_alive?: boolean | null;
+  mother_death_age?: string;
+  father_death_age?: string;
+  family_members?: FamilyMember[];
+  // Q7
+  academic_records?: AcademicRecord[];
+  // Q8
+  age_years?: number | string;
+  age_months?: number | string;
+  height?: string;
+  weight?: string;
+  // Q9
+  present_occupation?: string;
+  monthly_income?: string;
+  // Q10
+  ncc_training?: boolean | null;
+  ncc_details?: NCCDetail[];
+  // Q11
+  sports?: SportRecord[];
+  hobbies?: string;
+  extracurricular?: ExtracurricularRecord[];
+  responsibility_positions?: string;
+  // Q12–Q14
+  nature_of_commission?: string;
+  choice_of_service?: string;
+  commission_attempts?: number | string;
+  previous_interviews?: InterviewRecord[];
+  // SSB context
+  exam?: string;
+  level?: string;
+}
+
+// ---------------------------------------------------------------------------
+// Legacy profile input (kept for backward compat if needed)
+// ---------------------------------------------------------------------------
 export interface UserProfileInput {
   exam: string;
   branch?: string;
@@ -26,7 +149,9 @@ export interface UserProfileInput {
 }
 
 export const apiService = {
-  // User Profile
+  // ---------------------------------------------------------------------------
+  // User Profile (returns user + piq_profile)
+  // ---------------------------------------------------------------------------
   async getProfile() {
     const res = await fetch(`${API_BASE_URL}/api/user/profile`, {
       headers: await getHeaders(),
@@ -38,17 +163,49 @@ export const apiService = {
     return res.json();
   },
 
-  async updateProfile(profile: UserProfileInput) {
-    const res = await fetch(`${API_BASE_URL}/api/user/profile`, {
-      method: 'PUT',
+  // ---------------------------------------------------------------------------
+  // PIQ Profile — Full DIPR 107-A
+  // ---------------------------------------------------------------------------
+  async getPIQProfile() {
+    const res = await fetch(`${API_BASE_URL}/api/user/piq`, {
       headers: await getHeaders(),
-      body: JSON.stringify(profile),
     });
-    if (!res.ok) throw new Error('Failed to update profile');
+    if (res.status === 404) return null;
+    if (!res.ok) throw new Error('Failed to fetch PIQ profile');
     return res.json();
   },
 
+  async updatePIQProfile(data: PIQData) {
+    const res = await fetch(`${API_BASE_URL}/api/user/piq`, {
+      method: 'PUT',
+      headers: await getHeaders(),
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err?.detail || 'Failed to save PIQ profile');
+    }
+    return res.json();
+  },
+
+  async extractPIQ(file: File) {
+    const formData = new FormData();
+    formData.append('file', file);
+    const res = await fetch(`${API_BASE_URL}/api/user/piq/extract`, {
+      method: 'POST',
+      headers: await getHeaders(true),
+      body: formData,
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err?.detail || 'Failed to extract PIQ form');
+    }
+    return res.json();
+  },
+
+  // ---------------------------------------------------------------------------
   // Chats
+  // ---------------------------------------------------------------------------
   async getChatHistory() {
     const res = await fetch(`${API_BASE_URL}/api/chat/history`, {
       headers: await getHeaders(),
@@ -74,7 +231,9 @@ export const apiService = {
     return res.json();
   },
 
+  // ---------------------------------------------------------------------------
   // Usage Logs
+  // ---------------------------------------------------------------------------
   async getUsage() {
     const res = await fetch(`${API_BASE_URL}/api/usage`, {
       headers: await getHeaders(),
@@ -83,7 +242,9 @@ export const apiService = {
     return res.json();
   },
 
+  // ---------------------------------------------------------------------------
   // Admin Docs & Namespaces CRUD
+  // ---------------------------------------------------------------------------
   async getNamespaces() {
     const res = await fetch(`${API_BASE_URL}/api/documents/namespaces`, {
       headers: await getHeaders(),
@@ -198,7 +359,9 @@ export const apiService = {
     return res.json();
   },
 
+  // ---------------------------------------------------------------------------
   // SSE Chat Response Streaming
+  // ---------------------------------------------------------------------------
   async streamChat(
     message: string,
     chatId: string | null,

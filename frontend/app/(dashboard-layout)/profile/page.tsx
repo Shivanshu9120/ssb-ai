@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { 
   User as UserIcon, 
   Mail, 
@@ -16,7 +17,9 @@ import {
   CheckCircle2, 
   AlertCircle,
   Sparkles,
-  Zap
+  Zap,
+  FileText,
+  ChevronRight
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { apiService } from '@/services/api';
@@ -38,11 +41,11 @@ export default function ProfilePage() {
 
   // Load profile values into state
   useEffect(() => {
-    if (profile?.profile) {
-      setExam(profile.profile.exam || 'CDS');
-      setBranch(profile.profile.branch || 'Army');
-      setAttempt(profile.profile.attempt || 1);
-      setLevel(profile.profile.level || 'Intermediate');
+    if (profile?.piq_profile) {
+      setExam(profile.piq_profile.exam || 'Army');
+      setBranch(profile.piq_profile.choice_of_service || '');
+      setAttempt(profile.piq_profile.commission_attempts || 1);
+      setLevel(profile.piq_profile.level || 'Intermediate');
     }
   }, [profile]);
 
@@ -53,10 +56,10 @@ export default function ProfilePage() {
       setErrorMsg('');
       setSuccessMsg('');
 
-      await apiService.updateProfile({
+      await apiService.updatePIQProfile({
         exam,
-        branch,
-        attempt: Number(attempt),
+        choice_of_service: branch,
+        commission_attempts: Number(attempt),
         level
       });
 
@@ -71,11 +74,11 @@ export default function ProfilePage() {
   };
 
   const handleCancelEdit = () => {
-    if (profile?.profile) {
-      setExam(profile.profile.exam || 'CDS');
-      setBranch(profile.profile.branch || 'Army');
-      setAttempt(profile.profile.attempt || 1);
-      setLevel(profile.profile.level || 'Intermediate');
+    if (profile?.piq_profile) {
+      setExam(profile.piq_profile.exam || 'Army');
+      setBranch(profile.piq_profile.choice_of_service || '');
+      setAttempt(profile.piq_profile.commission_attempts || 1);
+      setLevel(profile.piq_profile.level || 'Intermediate');
     }
     setIsEditing(false);
     setErrorMsg('');
@@ -93,7 +96,7 @@ export default function ProfilePage() {
     ? new Date(user.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
     : 'Recent Member';
 
-  const isFresher = (profile?.profile?.attempt || attempt) === 1;
+  const isFresher = (profile?.piq_profile?.commission_attempts || attempt) <= 1;
 
   return (
     <div className="max-w-4xl mx-auto p-6 md:p-8 space-y-8">
@@ -170,14 +173,15 @@ export default function ProfilePage() {
 
         {/* Profile Content: View vs Edit Mode */}
         {!isEditing ? (
-          /* View Mode Grid */
+          /* View Mode */
+          <>
           <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
             <div className="p-4 rounded-xl bg-[#1b1b1b] border border-zinc-900 space-y-1">
               <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider flex items-center gap-1.5">
                 <Target className="w-3.5 h-3.5 text-amber-500" /> Target Exam
               </span>
               <p className="text-sm font-extrabold text-zinc-100">
-                {profile?.profile?.exam || 'CDS'}
+                {profile?.piq_profile?.exam || 'Army'}
               </p>
             </div>
 
@@ -186,7 +190,7 @@ export default function ProfilePage() {
                 <Briefcase className="w-3.5 h-3.5 text-amber-500" /> Service Branch
               </span>
               <p className="text-sm font-extrabold text-zinc-100">
-                {profile?.profile?.branch || 'Army'}
+                {profile?.piq_profile?.choice_of_service || 'Not set'}
               </p>
             </div>
 
@@ -195,7 +199,7 @@ export default function ProfilePage() {
                 <Award className="w-3.5 h-3.5 text-amber-500" /> Attempt Status
               </span>
               <p className="text-sm font-extrabold text-zinc-100">
-                {isFresher ? '1st Attempt (Fresher)' : `${profile?.profile?.attempt || attempt} Attempts (Repeater)`}
+                {isFresher ? '1st Attempt (Fresher)' : `${profile?.piq_profile?.commission_attempts || attempt} Attempt(s) (Repeater)`}
               </p>
             </div>
 
@@ -204,10 +208,18 @@ export default function ProfilePage() {
                 <ShieldCheck className="w-3.5 h-3.5 text-amber-500" /> Preparation Level
               </span>
               <p className="text-sm font-extrabold text-zinc-100">
-                {profile?.profile?.level || 'Intermediate'}
+                {profile?.piq_profile?.level || 'Intermediate'}
               </p>
             </div>
           </div>
+
+          {/* Link to full PIQ form */}
+          <div className="mt-2">
+            <Link href="/piq" className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-amber-500/20 bg-amber-500/5 text-amber-400 text-xs font-semibold hover:bg-amber-500/10 transition-colors">
+              <FileText className="w-3.5 h-3.5" /> View / Edit Full PIQ Form <ChevronRight className="w-3 h-3" />
+            </Link>
+          </div>
+          </>
         ) : (
           /* Edit Mode Form */
           <form onSubmit={handleSaveProfile} className="space-y-6">
@@ -323,7 +335,7 @@ export default function ProfilePage() {
           <Sparkles className="w-4 h-4 text-amber-500" /> Tailored AI Evaluation Profile
         </h3>
         <p className="text-xs text-zinc-400 leading-relaxed">
-          Your active SSB Mentor AI uses your profile parameters (<strong className="text-zinc-200">{profile?.profile?.exam || exam}</strong> • <strong className="text-zinc-200">{profile?.profile?.branch || branch}</strong>) to tailor response evaluation depth, TAT story psychological factor analysis, and SRT situation difficulty.
+          Your active SSB Mentor AI uses your profile parameters (<strong className="text-zinc-200">{profile?.piq_profile?.exam || exam}</strong> • <strong className="text-zinc-200">{profile?.piq_profile?.choice_of_service || branch || 'Service not set'}</strong>) to tailor response evaluation depth, TAT story psychological factor analysis, and SRT situation difficulty.
         </p>
 
         <div className="p-4 rounded-xl bg-[#1b1b1b] border border-zinc-800/80 flex items-center justify-between text-xs">
@@ -331,7 +343,7 @@ export default function ProfilePage() {
             <Zap className="w-5 h-5 text-amber-500 flex-shrink-0" />
             <div>
               <span className="font-bold text-zinc-200 block">Vector RAG Context Optimization</span>
-              <span className="text-[11px] text-zinc-500">Retrieving specialized modules for {profile?.profile?.branch || branch} candidates.</span>
+              <span className="text-[11px] text-zinc-500">Retrieving specialized modules for {profile?.piq_profile?.choice_of_service || branch || 'your target branch'} candidates.</span>
             </div>
           </div>
           <span className="px-2.5 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold">

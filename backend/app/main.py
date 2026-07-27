@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
-from app.api import user, chat, usage, admin
+from app.api import user, chat, usage, admin, piq_extract
 from app.database.connection import engine
 from sqlmodel import SQLModel
 
@@ -22,6 +22,7 @@ app.add_middleware(
 
 # Include routers
 app.include_router(user.router, prefix="/api")
+app.include_router(piq_extract.router, prefix="/api")
 app.include_router(chat.router, prefix="/api")
 app.include_router(usage.router, prefix="/api")
 app.include_router(admin.router, prefix="/api")
