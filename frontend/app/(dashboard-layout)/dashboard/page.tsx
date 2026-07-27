@@ -22,10 +22,16 @@ import {
   FileText,
   ChevronRight
 } from 'lucide-react';
+import dynamic from 'next/dynamic';
 import { useAuth } from '@/context/AuthContext';
 import { useChat } from '@/context/ChatContext';
 import { apiService } from '@/services/api';
-import NamespaceExplorer from './NamespaceExplorer';
+import { MilitaryLoader } from '@/components/ui/MilitaryLoader';
+
+const NamespaceExplorer = dynamic(() => import('./NamespaceExplorer'), {
+  loading: () => <MilitaryLoader variant="card" message="Loading Tactical Vector Store Explorer..." />,
+  ssr: false,
+});
 
 export default function Dashboard() {
   const { user, profile, loading: authLoading, isAdmin, piqCompletedSteps } = useAuth();
@@ -146,11 +152,7 @@ export default function Dashboard() {
   };
 
   if (authLoading) {
-    return (
-      <div className="min-h-screen bg-[#1e1e1f] flex items-center justify-center text-zinc-500">
-        <Loader2 className="w-8 h-8 animate-spin text-amber-500" />
-      </div>
-    );
+    return <MilitaryLoader variant="fullscreen" />;
   }
 
   // Get current usage metrics for today

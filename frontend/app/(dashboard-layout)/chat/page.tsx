@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { MilitaryLoader } from '@/components/ui/MilitaryLoader';
 import { 
   Send, 
   Plus, 
@@ -363,11 +364,7 @@ function ChatConsoleInner() {
   };
 
   if (authLoading) {
-    return (
-      <div className="min-h-screen bg-[#1e1e1f] flex items-center justify-center text-zinc-500">
-        <Loader2 className="w-8 h-8 animate-spin text-amber-500" />
-      </div>
-    );
+    return <MilitaryLoader variant="fullscreen" />;
   }
 
   // Sample static steps for the RAG pipeline reasoning

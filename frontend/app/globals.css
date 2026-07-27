@@ -227,24 +227,34 @@ html[data-theme="camo"] .theme-bg-card {
   to { transform: rotate(360deg); }
 }
 
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
+@keyframes sonarRipple {
+  0% { transform: scale(0.2); opacity: 0.9; }
+  50% { opacity: 0.5; }
+  100% { transform: scale(2.2); opacity: 0; }
 }
 
-@keyframes slideInLeft {
-  from { opacity: 0; transform: translateX(-40px); }
-  to { opacity: 1; transform: translateX(0); }
+@keyframes fighterJetDiagonal {
+  0% { transform: translate(-120%, 80%) rotate(-25deg); opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { transform: translate(120%, -80%) rotate(-25deg); opacity: 0; }
 }
 
-@keyframes slideInRight {
-  from { opacity: 0; transform: translateX(40px); }
-  to { opacity: 1; transform: translateX(0); }
+@keyframes fighterJetHorizontal {
+  0% { transform: translateX(-120%) translateY(0) rotate(0deg); opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { transform: translateX(120%) translateY(0) rotate(0deg); opacity: 0; }
 }
 
-@keyframes starfieldScroll {
-  0% { background-position: 0 0, 50px 100px, 100px 50px; }
-  100% { background-position: -200px -200px, -150px -100px, -100px -150px; }
+@keyframes skeletonShimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes hudTargetLock {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.8; }
+  50% { transform: scale(1.15) rotate(90deg); opacity: 1; }
 }
 
 /* ===== UTILITY CLASSES ===== */
@@ -258,6 +268,12 @@ html[data-theme="camo"] .theme-bg-card {
 .animate-slide-right { animation: slideInRight 0.8s ease both; }
 .animate-tricolor { animation: tricolorPulse 3s ease-in-out infinite; }
 .animate-blink { animation: blink 1.5s ease-in-out infinite; }
+.animate-radar-sweep { animation: rotateRadar 3.5s linear infinite; }
+.animate-sonar-ripple { animation: sonarRipple 2.8s cubic-bezier(0.1, 0.5, 0.5, 1) infinite; }
+.animate-jet-diagonal { animation: fighterJetDiagonal 7s ease-in-out infinite; }
+.animate-jet-horizontal { animation: fighterJetHorizontal 9s ease-in-out infinite 2.5s; }
+.animate-hud-lock { animation: hudTargetLock 4s ease-in-out infinite; }
+.animate-skeleton-shimmer { animation: skeletonShimmer 1.8s ease-in-out infinite; }
 
 .delay-100 { animation-delay: 0.1s; }
 .delay-200 { animation-delay: 0.2s; }

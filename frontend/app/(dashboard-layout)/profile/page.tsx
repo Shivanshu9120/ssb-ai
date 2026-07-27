@@ -22,6 +22,7 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
+import { MilitaryLoader } from '@/components/ui/MilitaryLoader';
 import { apiService } from '@/services/api';
 
 export default function ProfilePage() {
@@ -85,11 +86,7 @@ export default function ProfilePage() {
   };
 
   if (authLoading) {
-    return (
-      <div className="min-h-[70vh] flex items-center justify-center text-zinc-500">
-        <Loader2 className="w-8 h-8 animate-spin text-amber-500" />
-      </div>
-    );
+    return <MilitaryLoader variant="fullscreen" />;
   }
 
   const memberSince = user?.created_at 

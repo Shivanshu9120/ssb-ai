@@ -18,6 +18,7 @@ import {
   CheckCircle2
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
+import { MilitaryLoader } from '@/components/ui/MilitaryLoader';
 import { apiService } from '@/services/api';
 
 interface PlanDetail {
@@ -121,11 +122,7 @@ export default function BillingPage() {
   const currentPlanName = profile?.plan || 'Free Cadre';
 
   if (authLoading) {
-    return (
-      <div className="min-h-[70vh] flex items-center justify-center text-zinc-500">
-        <Loader2 className="w-8 h-8 animate-spin text-amber-500" />
-      </div>
-    );
+    return <MilitaryLoader variant="fullscreen" />;
   }
 
   return (

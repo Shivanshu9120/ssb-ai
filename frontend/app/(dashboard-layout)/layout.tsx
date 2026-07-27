@@ -561,17 +561,15 @@ function DashboardLayoutInner({
   );
 }
 
+import { MilitaryLoader } from '@/components/ui/MilitaryLoader';
+
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <React.Suspense fallback={
-      <div className="min-h-screen bg-[#1e1e1f] flex items-center justify-center text-zinc-500">
-        <Loader2 className="w-8 h-8 animate-spin text-amber-500" />
-      </div>
-    }>
+    <React.Suspense fallback={<MilitaryLoader variant="fullscreen" />}>
       <DashboardLayoutInner>{children}</DashboardLayoutInner>
     </React.Suspense>
   );

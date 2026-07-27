@@ -7,6 +7,7 @@ import {
   User, Users, GraduationCap, Activity, Shield, CheckCircle2, AlertCircle, X
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
+import { MilitaryLoader } from '@/components/ui/MilitaryLoader';
 import { apiService, PIQData, FamilyMember, AcademicRecord, NCCDetail, SportRecord, ExtracurricularRecord, InterviewRecord } from '@/services/api';
 
 // ---------------------------------------------------------------------------
@@ -659,11 +660,7 @@ export default function PIQPage() {
   };
 
   if (authLoading || loading) {
-    return (
-      <div className="min-h-[70vh] flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-amber-500" />
-      </div>
-    );
+    return <MilitaryLoader variant="fullscreen" />;
   }
 
   const steps = piqData?.completed_steps || 0;

@@ -8,6 +8,7 @@ import {
   UploadCloud, Sparkles, FileUp, AlertCircle
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
+import { MilitaryLoader } from '@/components/ui/MilitaryLoader';
 import { apiService, PIQData, FamilyMember, AcademicRecord, NCCDetail, SportRecord, ExtracurricularRecord, InterviewRecord } from '@/services/api';
 
 // ---------------------------------------------------------------------------
@@ -687,11 +688,7 @@ export default function Onboarding() {
   };
 
   if (authLoading) {
-    return (
-      <div className="min-h-screen bg-[#0b0b0b] flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-amber-500" />
-      </div>
-    );
+    return <MilitaryLoader variant="fullscreen" />;
   }
 
   if (submitDone) {
