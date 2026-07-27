@@ -5,7 +5,35 @@ from pydantic import BaseModel
 from typing import Optional, List
 import json
 import asyncio
+import os
+import re
 from uuid import UUID
+
+def clean_document_title(document: str, title: str = None) -> str:
+    """
+    Sanitizes raw document filenames into clean, human-readable titles.
+    Example: '1728392_ssb_psychology_guide.pdf' -> 'SSB Psychology Guide'
+    """
+    if title and title.strip() and title.lower() != "untitled":
+        clean_title = title.strip()
+    else:
+        clean_title = document or "SSB Knowledge Base"
+
+    clean_title = os.path.basename(clean_title)
+    clean_title = os.path.splitext(clean_title)[0]
+    clean_title = re.sub(r'^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}_?', '', clean_title, flags=re.IGNORECASE)
+    clean_title = re.sub(r'^\d+[\-_]', '', clean_title)
+    clean_title = clean_title.replace('_', ' ').replace('-', ' ').strip()
+    
+    words = clean_title.split()
+    formatted_words = []
+    for w in words:
+        if w.lower() in ['ssb', 'tat', 'wat', 'srt', 'gto', 'olq', 'olqs', 'iaf', 'ota', 'ima']:
+            formatted_words.append(w.upper())
+        else:
+            formatted_words.append(w.capitalize())
+            
+    return " ".join(formatted_words) if formatted_words else "SSB Knowledge Base"
 
 from app.database.connection import get_session
 from app.core.security import get_current_user
@@ -129,12 +157,13 @@ async def start_chat_stream(
         chunks = Retriever.retrieve(rag_query, top_k=5)
         context_parts = []
         for i, chunk in enumerate(chunks, 1):
-            context_parts.append(f"[{i}] Source: {chunk['document']} (Page {chunk['page']})\nContent: {chunk['text']}")
+            clean_title = clean_document_title(chunk.get("document"), chunk.get("title"))
+            context_parts.append(f"[{i}] Reference: {clean_title} (Page {chunk['page']})\nContent: {chunk['text']}")
             citations.append({
-                "source": chunk["document"],
-                "page": chunk["page"],
-                "title": chunk["title"],
-                "topic": chunk["topic"]
+                "source": chunk.get("document", "Knowledge Base"),
+                "page": chunk.get("page", 1),
+                "title": clean_title,
+                "topic": chunk.get("topic", "General")
             })
         context_str = "\n\n".join(context_parts)
     except Exception as ret_err:

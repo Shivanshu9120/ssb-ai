@@ -567,22 +567,28 @@ function ChatConsoleInner() {
                           {hasCitations ? (
                             <div className="grid gap-2.5">
                               <span className="block text-[10px] text-zinc-500 uppercase font-bold tracking-wider">Matched RAG Citations</span>
-                              {citations.map((cite, idx) => (
-                                <div key={idx} className="p-3 rounded-xl border border-zinc-900 bg-[#181818]/60 space-y-1 hover:border-zinc-800 transition-colors">
-                                  <div className="flex items-center justify-between">
-                                    <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-amber-500/10 border border-amber-500/20 text-amber-500 text-[9px] font-bold">
-                                      Ref [{idx + 1}]
-                                    </span>
-                                    <span className="text-[9px] text-zinc-500">Page {cite.page || 1}</span>
+                              {citations.map((cite, idx) => {
+                                const displayTitle = cite.title || 'Referenced Documentation';
+                                const topicBadge = cite.topic ? (cite.topic.charAt(0).toUpperCase() + cite.topic.slice(1)).replace(/_/g, ' ') : 'SSB Material';
+                                return (
+                                  <div key={idx} className="p-3 rounded-xl border border-zinc-900 bg-[#181818]/60 space-y-1.5 hover:border-zinc-800 transition-colors">
+                                    <div className="flex items-center justify-between">
+                                      <div className="flex items-center gap-2">
+                                        <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-amber-500/10 border border-amber-500/20 text-amber-500 text-[9px] font-bold">
+                                          Ref [{idx + 1}]
+                                        </span>
+                                        <span className="px-2 py-0.5 rounded bg-zinc-800/80 text-amber-400/90 border border-zinc-700/40 text-[9px] font-bold uppercase tracking-wider">
+                                          {topicBadge}
+                                        </span>
+                                      </div>
+                                      <span className="text-[10px] text-zinc-400 font-semibold">Page {cite.page || 1}</span>
+                                    </div>
+                                    <h4 className="font-bold text-xs text-zinc-100 mt-1 leading-snug">
+                                      {displayTitle}
+                                    </h4>
                                   </div>
-                                  <h4 className="font-bold text-xs text-zinc-200 mt-1">
-                                    {cite.title || 'Referenced Documentation'}
-                                  </h4>
-                                  <div className="text-[10px] text-zinc-500 truncate">
-                                    Category: <span className="text-zinc-400 font-semibold">{cite.source?.split('/')?.[0] || 'Ingested Files'}</span>
-                                  </div>
-                                </div>
-                              ))}
+                                );
+                              })}
                             </div>
                           ) : (
                             <div className="text-center py-6 text-zinc-500 text-xs">
