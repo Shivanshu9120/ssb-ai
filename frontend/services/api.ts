@@ -176,14 +176,33 @@ export const apiService = {
   },
 
   async updatePIQProfile(data: PIQData) {
+    const cleanData: any = { ...data };
+    if (cleanData.date_of_birth === '' || cleanData.date_of_birth === undefined) cleanData.date_of_birth = null;
+    if (cleanData.age_years === '' || cleanData.age_years === undefined) cleanData.age_years = null;
+    if (cleanData.age_months === '' || cleanData.age_months === undefined) cleanData.age_months = null;
+    if (cleanData.commission_attempts === '' || cleanData.commission_attempts === undefined) cleanData.commission_attempts = null;
+
+    if (Array.isArray(cleanData.previous_interviews)) {
+      cleanData.previous_interviews = cleanData.previous_interviews.map((item: any) => ({
+        ...item,
+        sl_no: item.sl_no === '' || item.sl_no === undefined ? null : item.sl_no,
+      }));
+    }
+
     const res = await fetch(`${API_BASE_URL}/api/user/piq`, {
       method: 'PUT',
       headers: await getHeaders(),
-      body: JSON.stringify(data),
+      body: JSON.stringify(cleanData),
     });
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
-      throw new Error(err?.detail || 'Failed to save PIQ profile');
+      let msg = 'Failed to save PIQ profile';
+      if (typeof err?.detail === 'string') {
+        msg = err.detail;
+      } else if (Array.isArray(err?.detail) && err.detail.length > 0) {
+        msg = err.detail.map((e: any) => e.msg || e.detail).filter(Boolean).join(', ');
+      }
+      throw new Error(msg);
     }
     return res.json();
   },
@@ -366,18 +385,19 @@ export const apiService = {
     message: string,
     chatId: string | null,
     callbacks: {
-      onInit: (data: { chat_id: string; citations: any[] }) => void;
+      onInit: (data: { chat_id: string; citations: any[]; include_piq?: boolean }) => void;
       onChunk: (text: string) => void;
       onMetadata: (metadata: { prompt_tokens: number; completion_tokens: number; model: string }) => void;
       onError: (err: string) => void;
       onDone: () => void;
-    }
+    },
+    includePiq?: boolean
   ) {
     try {
       const response = await fetch(`${API_BASE_URL}/api/chat`, {
         method: 'POST',
         headers: await getHeaders(),
-        body: JSON.stringify({ message, chat_id: chatId }),
+        body: JSON.stringify({ message, chat_id: chatId, include_piq: includePiq }),
       });
 
       if (!response.ok) {

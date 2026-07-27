@@ -27,16 +27,22 @@ OPENROUTER_FALLBACK_MODELS = [
 
 class LLMService:
     @staticmethod
-    def generate_chat_stream(prompt: str, context_str: str = "", history: list = None, custom_api_key: str = None):
+    def generate_chat_stream(prompt: str, context_str: str = "", history: list = None, custom_api_key: str = None, piq_context: str = ""):
         """
         Generates a streaming response with automatic multi-provider fallback and multi-turn thread history:
         1. Gemini 2.0 Flash (using custom key if provided, or default GEMINI_API_KEY)
         2. Groq Free API (if GROQ_API_KEY is configured)
         3. OpenRouter Free Models
         """
-        final_prompt = prompt
+        effective_system_prompt = SYSTEM_PROMPT
+        if piq_context:
+            effective_system_prompt += f"\n\nCRITICAL CONTEXT: The candidate has imported their Personal Information Questionnaire (PIQ) profile details:\n{piq_context}\n\nINSTRUCTIONS FOR PIQ CONTEXT:\n- Act as a senior SSB Interviewing Officer (IO) or Psychologist.\n- Use the candidate's exact background (academics, sports, family, previous SSB attempts, hobbies, responsibilities) to tailor your advice, simulate realistic IO questions, analyze profile gaps/red flags, and show how to project the 15 Officer Like Qualities (OLQs).\n- Directly reference their actual details (e.g. education marks, specific sports, family profession) to give deeply personalized, authentic guidance."
+
+        prompt_parts = []
         if context_str:
-            final_prompt = f"Context from Knowledge Base:\n{context_str}\n\nCandidate Question:\n{prompt}"
+            prompt_parts.append(f"Context from Knowledge Base:\n{context_str}")
+        prompt_parts.append(f"Candidate Question:\n{prompt}")
+        final_prompt = "\n\n".join(prompt_parts)
 
         # Construct Gemini multi-turn contents array
         gemini_contents = []
@@ -53,7 +59,7 @@ class LLMService:
         })
 
         # Construct OpenAI-compatible messages array for Groq and OpenRouter
-        openai_messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+        openai_messages = [{"role": "system", "content": effective_system_prompt}]
         if history:
             for item in history:
                 openai_messages.append({
@@ -80,7 +86,7 @@ class LLMService:
                 model="models/gemini-2.0-flash",
                 contents=gemini_contents,
                 config=types.GenerateContentConfig(
-                    system_instruction=SYSTEM_PROMPT,
+                    system_instruction=effective_system_prompt,
                 )
             )
 

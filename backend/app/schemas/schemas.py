@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 from typing import Optional, List, Any, Dict
 from datetime import datetime, date
 from uuid import UUID
@@ -69,6 +69,18 @@ class InterviewRecord(BaseModel):
     ssb_place: Optional[str] = ""
     date: Optional[str] = ""
     chest_batch_no: Optional[str] = ""
+
+    @field_validator('sl_no', mode='before')
+    @classmethod
+    def parse_optional_int(cls, v):
+        if v == "" or v is None or (isinstance(v, str) and not v.strip()):
+            return None
+        if isinstance(v, str):
+            try:
+                return int(v)
+            except ValueError:
+                return None
+        return v
 
 
 # ---------------------------------------------------------------------------
@@ -141,6 +153,25 @@ class PIQProfileCreate(BaseModel):
     # SSB AI context
     exam: Optional[str] = None
     level: Optional[str] = None
+
+    @field_validator('date_of_birth', mode='before')
+    @classmethod
+    def parse_optional_date(cls, v):
+        if v == "" or v is None or (isinstance(v, str) and not v.strip()):
+            return None
+        return v
+
+    @field_validator('age_years', 'age_months', 'commission_attempts', mode='before')
+    @classmethod
+    def parse_optional_int(cls, v):
+        if v == "" or v is None or (isinstance(v, str) and not v.strip()):
+            return None
+        if isinstance(v, str):
+            try:
+                return int(v)
+            except ValueError:
+                return None
+        return v
 
 
 # ---------------------------------------------------------------------------
@@ -238,6 +269,7 @@ class ChatResponse(BaseModel):
     id: UUID
     user_id: UUID
     title: str
+    include_piq: bool = False
     created_at: datetime
 
     class Config:

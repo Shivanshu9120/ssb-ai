@@ -141,6 +141,7 @@ class Chat(SQLModel, table=True):
     id: UUID = Field(default_factory=uuid4, primary_key=True)
     user_id: UUID = Field(foreign_key="users.id", nullable=False)
     title: str = Field(default="New Conversation")
+    include_piq: bool = Field(default=False)
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
     user: Optional[User] = Relationship(back_populates="chats")

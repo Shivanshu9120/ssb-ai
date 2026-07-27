@@ -37,10 +37,11 @@ def clean_document_title(document: str, title: str = None) -> str:
 
 from app.database.connection import get_session
 from app.core.security import get_current_user
-from app.models.models import User, Chat, Message
+from app.models.models import User, Chat, Message, PIQProfile
 from app.schemas.schemas import ChatResponse, MessageResponse
 from app.services.token_service import TokenService
 from app.services.llm_service import LLMService
+from app.services.piq_formatter import format_piq_to_markdown
 from app.rag.retriever import Retriever
 
 router = APIRouter(prefix="/chat", tags=["Chat"])
@@ -48,6 +49,7 @@ router = APIRouter(prefix="/chat", tags=["Chat"])
 class ChatRequest(BaseModel):
     message: str
     chat_id: Optional[UUID] = None
+    include_piq: Optional[bool] = None
 
 @router.get("/history", response_model=List[ChatResponse])
 def get_chat_history(
@@ -113,7 +115,8 @@ async def start_chat_stream(
     if not chat_id:
         # Auto-generate title from prompt snippet
         title = request.message[:35] + "..." if len(request.message) > 35 else request.message
-        chat = Chat(user_id=current_user.id, title=title)
+        include_piq_flag = bool(request.include_piq)
+        chat = Chat(user_id=current_user.id, title=title, include_piq=include_piq_flag)
         session.add(chat)
         session.commit()
         session.refresh(chat)
@@ -122,6 +125,18 @@ async def start_chat_stream(
         chat = session.get(Chat, chat_id)
         if not chat or chat.user_id != current_user.id:
             raise HTTPException(status_code=404, detail="Chat conversation not found.")
+        if request.include_piq is not None and request.include_piq != chat.include_piq:
+            chat.include_piq = request.include_piq
+            session.add(chat)
+            session.commit()
+
+    # 2.3 Fetch PIQ Context if enabled for this thread
+    piq_context = ""
+    if chat.include_piq:
+        statement = select(PIQProfile).where(PIQProfile.user_id == current_user.id)
+        piq = session.exec(statement).first()
+        if piq:
+            piq_context = format_piq_to_markdown(piq)
 
     # 2.5 Extract previous thread message history (up to last 6 messages / 3 interaction turns)
     history = []
@@ -175,7 +190,8 @@ async def start_chat_stream(
         # First SSE payload sends initial configuration & sources
         init_payload = {
             "chat_id": str(chat_id),
-            "citations": citations
+            "citations": citations,
+            "include_piq": chat.include_piq
         }
         yield f"data: {json.dumps({'init': init_payload})}\n\n"
 
@@ -190,7 +206,8 @@ async def start_chat_stream(
                 request.message,
                 context_str,
                 history=history,
-                custom_api_key=x_gemini_api_key
+                custom_api_key=x_gemini_api_key,
+                piq_context=piq_context
             ))
 
         sse_events = await asyncio.to_thread(run_llm)

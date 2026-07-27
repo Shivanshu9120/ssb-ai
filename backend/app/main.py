@@ -4,6 +4,7 @@ from app.core.config import settings
 from app.api import user, chat, usage, admin, piq_extract
 from app.database.connection import engine
 from sqlmodel import SQLModel
+from sqlalchemy import text
 
 app = FastAPI(
     title="SSB Mentor AI API",
@@ -18,7 +19,7 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-)
+    )
 
 # Include routers
 app.include_router(user.router, prefix="/api")
@@ -41,6 +42,9 @@ def on_startup():
     # Supabase projects will already have tables created via the SQL Editor schema scripts.
     try:
         SQLModel.metadata.create_all(engine)
+        with engine.connect() as conn:
+            conn.execute(text("ALTER TABLE chats ADD COLUMN IF NOT EXISTS include_piq BOOLEAN DEFAULT FALSE;"))
+            conn.commit()
         print("Database tables initialized/verified.")
     except Exception as e:
         print(f"Database initialization alert (could be using managed Supabase schema): {str(e)}")
