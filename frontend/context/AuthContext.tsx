@@ -11,15 +11,22 @@ interface AuthContextType {
   session: Session | null;
   loading: boolean;
   profile: any | null;
+  isAdmin: boolean;
   fetchProfile: () => Promise<void>;
   signOut: () => Promise<void>;
 }
+
+const ADMIN_EMAILS = (process.env.NEXT_PUBLIC_ADMIN_EMAILS || '')
+  .split(',')
+  .map((e) => e.trim().toLowerCase())
+  .filter(Boolean);
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
   session: null,
   loading: true,
   profile: null,
+  isAdmin: false,
   fetchProfile: async () => {},
   signOut: async () => {},
 });
@@ -94,8 +101,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     router.push('/login');
   };
 
+  const isAdmin = !!user && ADMIN_EMAILS.includes((user.email ?? '').toLowerCase());
+
   return (
-    <AuthContext.Provider value={{ user, session, loading, profile, fetchProfile, signOut }}>
+    <AuthContext.Provider value={{ user, session, loading, profile, isAdmin, fetchProfile, signOut }}>
       {children}
     </AuthContext.Provider>
   );

@@ -26,7 +26,7 @@ import { apiService } from '@/services/api';
 import NamespaceExplorer from './NamespaceExplorer';
 
 export default function Dashboard() {
-  const { user, profile, loading: authLoading } = useAuth();
+  const { user, profile, loading: authLoading, isAdmin } = useAuth();
   const { chats, loadingHistory, deleteChat, loadChatHistory } = useChat();
   const [usage, setUsage] = useState<any[]>([]);
   const [loadingData, setLoadingData] = useState(true);
@@ -264,16 +264,18 @@ export default function Dashboard() {
           >
             Recent Chats
           </button>
-          <button
-            onClick={() => setActiveTab('admin')}
-            className={`py-3 px-6 font-bold text-sm border-b-2 transition-all ${
-              activeTab === 'admin'
-                ? 'border-amber-500 text-amber-500'
-                : 'border-transparent text-zinc-400 hover:text-zinc-300'
-            }`}
-          >
-            Admin Knowledge Base
-          </button>
+          {isAdmin && (
+            <button
+              onClick={() => setActiveTab('admin')}
+              className={`py-3 px-6 font-bold text-sm border-b-2 transition-all ${
+                activeTab === 'admin'
+                  ? 'border-amber-500 text-amber-500'
+                  : 'border-transparent text-zinc-400 hover:text-zinc-300'
+              }`}
+            >
+              Admin Knowledge Base
+            </button>
+          )}
         </div>
 
         {/* Tab content 1: Chats */}
@@ -329,8 +331,8 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* Tab content 2: Admin Knowledge Base */}
-        {activeTab === 'admin' && (
+        {/* Tab content 2: Admin Knowledge Base — visible to admins only */}
+        {activeTab === 'admin' && isAdmin && (
           <div className="space-y-6">
             <div className="p-6 rounded-2xl bg-[#131313] border border-zinc-900 space-y-6">
               <div>

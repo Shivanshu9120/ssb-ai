@@ -6,6 +6,7 @@ import re
 from datetime import datetime
 
 from app.core.security import get_current_user
+from app.core.config import settings
 from app.models.models import User
 from ingestion.ingest import (
     get_all_namespaces,
@@ -27,9 +28,17 @@ class RenameNamespaceRequest(BaseModel):
 
 def verify_admin(current_user: User = Depends(get_current_user)):
     """
-    Ensure the user is authorized to perform admin actions.
-    For the MVP, we grant access to all logged-in users.
+    Ensure the requesting user is an authorized admin.
+    Admin emails are configured via the ADMIN_EMAILS environment variable
+    as a comma-separated list (e.g. "admin@example.com,other@example.com").
+    Returns 403 Forbidden for any user not on the allowlist.
     """
+    admin_emails = [e.strip().lower() for e in settings.ADMIN_EMAILS.split(",") if e.strip()]
+    if current_user.email.lower() not in admin_emails:
+        raise HTTPException(
+            status_code=403,
+            detail="Forbidden: Admin access is required to manage the knowledge base."
+        )
     return current_user
 
 def format_file_size(size_in_bytes: int) -> str:

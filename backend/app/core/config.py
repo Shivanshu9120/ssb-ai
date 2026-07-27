@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     GROQ_API_KEY: str = Field(default="", validation_alias="GROQ_API_KEY")
     PORT: int = Field(default=8000, validation_alias="PORT")
     ENV: str = Field(default="development", validation_alias="ENV")
+    ADMIN_EMAILS: str = Field(default="", validation_alias="ADMIN_EMAILS")
 
     class Config:
         env_file = ".env"
