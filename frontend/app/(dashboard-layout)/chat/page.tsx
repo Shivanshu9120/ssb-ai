@@ -20,7 +20,12 @@ import {
   Copy,
   Check,
   Pencil,
-  X
+  X,
+  Shield,
+  Ship,
+  Plane,
+  Star,
+  ChevronUp
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { useChat } from '@/context/ChatContext';
@@ -58,6 +63,67 @@ function ChatConsoleInner() {
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [editingMessageId, setEditingMessageId] = useState<string | null>(null);
   const [editInputText, setEditInputText] = useState('');
+
+  // Defense Service Selection State (1st Icon)
+  const [selectedService, setSelectedService] = useState<'all' | 'army' | 'navy' | 'airforce'>('all');
+  const [showServiceDropdown, setShowServiceDropdown] = useState(false);
+
+  // Speech-To-Text (STT) Voice Input State
+  const [isListening, setIsListening] = useState(false);
+  const recognitionRef = useRef<any>(null);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const SpeechRecognition =
+        (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+      if (SpeechRecognition) {
+        const rec = new SpeechRecognition();
+        rec.continuous = true;
+        rec.interimResults = true;
+        rec.lang = 'en-IN';
+
+        rec.onresult = (event: any) => {
+          let currentTranscript = '';
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            currentTranscript += event.results[i][0].transcript;
+          }
+          if (currentTranscript) {
+            setInputMessage(currentTranscript);
+          }
+        };
+
+        rec.onerror = (event: any) => {
+          console.error('STT Voice Input Error:', event.error);
+          setIsListening(false);
+        };
+
+        rec.onend = () => {
+          setIsListening(false);
+        };
+
+        recognitionRef.current = rec;
+      }
+    }
+  }, []);
+
+  const toggleVoiceInput = () => {
+    if (!recognitionRef.current) {
+      alert('Speech Recognition is not supported by your current browser. Please try Google Chrome or Brave.');
+      return;
+    }
+
+    if (isListening) {
+      recognitionRef.current.stop();
+      setIsListening(false);
+    } else {
+      try {
+        recognitionRef.current.start();
+        setIsListening(true);
+      } catch (err) {
+        console.error('Failed to start voice recognition:', err);
+      }
+    }
+  };
 
   // Processing status statements carousel
   const [processingIndex, setProcessingIndex] = useState(0);
@@ -638,14 +704,69 @@ function ChatConsoleInner() {
             <div className="flex items-center justify-between pt-2 px-1 border-t border-zinc-900/60 mt-1 select-none">
               
               {/* Left utility icons */}
-              <div className="flex items-center gap-1">
-                <button 
-                  type="button"
-                  title="Prompt Settings"
-                  className="p-1.5 text-zinc-600 hover:text-zinc-300 rounded-lg hover:bg-zinc-800/40 transition-colors"
-                >
-                  <SlidersHorizontal className="w-3.5 h-3.5" />
-                </button>
+              <div className="flex items-center gap-1.5 relative">
+                
+                {/* 1st Icon: Defense Service Branch Selector */}
+                <div className="relative">
+                  <button 
+                    type="button"
+                    onClick={() => setShowServiceDropdown(!showServiceDropdown)}
+                    title="Select Defense Service Branch"
+                    className={`p-1.5 rounded-lg transition-colors flex items-center gap-1 text-xs font-semibold ${
+                      selectedService !== 'all' 
+                        ? 'bg-amber-500/10 text-amber-400 border border-amber-500/30' 
+                        : 'text-zinc-500 hover:text-zinc-200 hover:bg-zinc-800/40'
+                    }`}
+                  >
+                    <SlidersHorizontal className="w-3.5 h-3.5" />
+                    {selectedService !== 'all' && (
+                      <span className="text-[10px] font-bold uppercase tracking-wider">
+                        {selectedService === 'army' ? 'Army' : selectedService === 'navy' ? 'Navy' : 'IAF'}
+                      </span>
+                    )}
+                    <ChevronUp className={`w-3 h-3 transition-transform ${showServiceDropdown ? 'rotate-180' : ''}`} />
+                  </button>
+
+                  {/* Dropdown Popup */}
+                  {showServiceDropdown && (
+                    <div className="absolute bottom-full left-0 mb-2.5 w-52 bg-[#161617] border border-zinc-800 rounded-2xl shadow-2xl p-2 z-50 flex flex-col gap-1 backdrop-blur-md">
+                      <span className="text-[9px] uppercase font-bold text-zinc-500 px-2.5 py-1 tracking-wider">
+                        Target Service Branch
+                      </span>
+                      {[
+                        { id: 'all', label: 'All Services (General)', desc: 'SSB Guidelines & OLQs', icon: Star, color: 'text-amber-400' },
+                        { id: 'army', label: 'Indian Army', desc: 'SSB & IMA / OTA Tasks', icon: Shield, color: 'text-emerald-400' },
+                        { id: 'navy', label: 'Indian Navy', desc: 'NSB & Executive/Tech', icon: Ship, color: 'text-sky-400' },
+                        { id: 'airforce', label: 'Indian Air Force', desc: 'AFSB & Flying/Ground', icon: Plane, color: 'text-indigo-400' },
+                      ].map((srv) => (
+                        <button
+                          key={srv.id}
+                          type="button"
+                          onClick={() => {
+                            setSelectedService(srv.id as any);
+                            setShowServiceDropdown(false);
+                          }}
+                          className={`w-full p-2 rounded-xl text-left flex items-center gap-2.5 transition-all ${
+                            selectedService === srv.id
+                              ? 'bg-amber-500/10 border border-amber-500/30'
+                              : 'hover:bg-zinc-800/60 border border-transparent'
+                          }`}
+                        >
+                          <srv.icon className={`w-4 h-4 flex-shrink-0 ${srv.color}`} />
+                          <div className="flex-1 min-w-0">
+                            <div className="text-xs font-bold text-zinc-200 flex items-center justify-between">
+                              <span>{srv.label}</span>
+                              {selectedService === srv.id && <Check className="w-3 h-3 text-amber-500" />}
+                            </div>
+                            <span className="text-[10px] text-zinc-500 block truncate">{srv.desc}</span>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* 2nd Icon: Attach Documents */}
                 <button 
                   type="button"
                   title="Attach Documents"
@@ -653,13 +774,22 @@ function ChatConsoleInner() {
                 >
                   <Paperclip className="w-3.5 h-3.5" />
                 </button>
+
+                {/* 3rd Icon: Voice Input STT */}
                 <button 
                   type="button"
-                  title="Voice Input"
-                  className="p-1.5 text-zinc-600 hover:text-zinc-300 rounded-lg hover:bg-zinc-800/40 transition-colors"
+                  onClick={toggleVoiceInput}
+                  title={isListening ? "Stop Voice Recording" : "Voice Input (Speech-to-Text)"}
+                  className={`p-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
+                    isListening
+                      ? 'bg-rose-500/20 text-rose-400 border border-rose-500/40 animate-pulse'
+                      : 'text-zinc-600 hover:text-zinc-300 hover:bg-zinc-800/40'
+                  }`}
                 >
-                  <Mic className="w-3.5 h-3.5" />
+                  <Mic className={`w-3.5 h-3.5 ${isListening ? 'text-rose-500 animate-bounce' : ''}`} />
+                  {isListening && <span className="text-[10px] text-rose-400 font-bold">Listening...</span>}
                 </button>
+
               </div>
 
               {/* Right Send icon */}

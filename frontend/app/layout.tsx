@@ -100,7 +100,7 @@ export const metadata: Metadata = {
 const jsonLdData = [
   {
     "@context": "https://schema.org",
-    "@type": "EducationalApplication",
+    "@type": ["SoftwareApplication", "EducationalApplication"],
     "name": "SSB AI Mentor",
     "operatingSystem": "Web",
     "applicationCategory": "EducationalApplication",
@@ -113,8 +113,10 @@ const jsonLdData = [
     },
     "aggregateRating": {
       "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "ratingCount": "1250"
+      "ratingValue": 4.9,
+      "ratingCount": 1250,
+      "bestRating": 5,
+      "worstRating": 1
     },
     "featureList": [
       "Psychological Test Evaluation (TAT, WAT, SRT)",
