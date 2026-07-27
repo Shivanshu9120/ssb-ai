@@ -57,23 +57,23 @@ export default function Onboarding() {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center text-slate-400">
-        <Loader2 className="w-8 h-8 animate-spin text-indigo-500" />
+      <div className="min-h-screen bg-[#131313] flex items-center justify-center text-zinc-400">
+        <Loader2 className="w-8 h-8 animate-spin text-amber-500" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col justify-center items-center px-4 relative">
-      <div className="absolute top-1/4 left-1/3 w-80 h-80 bg-indigo-600/5 rounded-full blur-3xl pointer-events-none" />
+    <div className="min-h-screen bg-[#131313] flex flex-col justify-center items-center px-4 relative select-none">
+      <div className="absolute top-1/4 left-1/3 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="w-full max-w-xl p-8 rounded-2xl border border-slate-900 bg-slate-900/20 backdrop-blur-md shadow-2xl relative">
+      <div className="w-full max-w-xl p-8 rounded-2xl border border-zinc-800 bg-[#18181b]/90 backdrop-blur-md shadow-2xl relative">
         <div className="flex flex-col items-center gap-2 mb-8 text-center">
-          <div className="w-10 h-10 rounded-lg bg-indigo-600 flex items-center justify-center text-white mb-2">
-            <Compass className="w-5 h-5 text-slate-100" />
+          <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-500 mb-2">
+            <Compass className="w-5 h-5" />
           </div>
-          <h2 className="text-2xl font-extrabold tracking-tight text-white">SSB Profile Setup</h2>
-          <p className="text-xs text-slate-400">Customize your RAG-coaching model context to match your branch requirements</p>
+          <h2 className="text-2xl font-extrabold tracking-tight text-zinc-100">SSB Profile Setup</h2>
+          <p className="text-xs text-zinc-400">Customize your RAG-coaching model context to match your branch requirements</p>
         </div>
 
         {error && (
@@ -85,11 +85,11 @@ export default function Onboarding() {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-400 mb-1.5">Target Service Branch</label>
+              <label className="block text-xs font-semibold text-zinc-400 mb-1.5">Target Service Branch</label>
               <select
                 value={exam}
                 onChange={(e) => setExam(e.target.value)}
-                className="w-full px-4 py-2.5 rounded-lg border border-slate-800 bg-slate-950 text-slate-100 text-sm focus:border-indigo-600 focus:outline-none transition-colors"
+                className="w-full px-4 py-2.5 rounded-xl border border-zinc-800 bg-[#131313] text-zinc-100 text-sm focus:border-amber-500/60 focus:outline-none transition-colors"
               >
                 <option value="Army">Indian Army</option>
                 <option value="Navy">Indian Navy</option>
@@ -98,11 +98,11 @@ export default function Onboarding() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-400 mb-1.5">Attempt Number</label>
+              <label className="block text-xs font-semibold text-zinc-400 mb-1.5">Attempt Number</label>
               <select
                 value={attempt}
                 onChange={(e) => setAttempt(Number(e.target.value))}
-                className="w-full px-4 py-2.5 rounded-lg border border-slate-800 bg-slate-950 text-slate-100 text-sm focus:border-indigo-600 focus:outline-none transition-colors"
+                className="w-full px-4 py-2.5 rounded-xl border border-zinc-800 bg-[#131313] text-zinc-100 text-sm focus:border-amber-500/60 focus:outline-none transition-colors"
               >
                 <option value="1">1st Attempt (Fresher)</option>
                 <option value="2">2nd Attempt (Repeater)</option>
@@ -113,28 +113,28 @@ export default function Onboarding() {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-400 mb-1.5">Preferred Entry Scheme / Branch (Optional)</label>
+            <label className="block text-xs font-semibold text-zinc-400 mb-1.5">Preferred Entry Scheme / Branch (Optional)</label>
             <input
               type="text"
               value={branch}
               onChange={(e) => setBranch(e.target.value)}
               placeholder="e.g. Flying (NDA/CDS), Tech entry (TGC), Infantry"
-              className="w-full px-4 py-2.5 rounded-lg border border-slate-800 bg-slate-950 text-slate-100 text-sm focus:border-indigo-600 focus:outline-none transition-colors"
+              className="w-full px-4 py-2.5 rounded-xl border border-zinc-800 bg-[#131313] text-zinc-100 placeholder-zinc-600 text-sm focus:border-amber-500/60 focus:outline-none transition-colors"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-400 mb-1.5">Current SSB Preparation Level</label>
+            <label className="block text-xs font-semibold text-zinc-400 mb-1.5">Current SSB Preparation Level</label>
             <div className="grid grid-cols-3 gap-3">
               {['Beginner', 'Intermediate', 'Advanced'].map((lvl) => (
                 <button
                   key={lvl}
                   type="button"
                   onClick={() => setLevel(lvl)}
-                  className={`py-3 rounded-lg border font-semibold text-xs text-center transition-all ${
+                  className={`py-3 rounded-xl border font-semibold text-xs text-center transition-all cursor-pointer ${
                     level === lvl
-                      ? 'border-indigo-600 bg-indigo-600/10 text-indigo-400 shadow-md shadow-indigo-600/5'
-                      : 'border-slate-800 bg-slate-950/80 text-slate-400 hover:text-slate-300 hover:border-slate-700'
+                      ? 'border-amber-500 bg-amber-500/10 text-amber-400 shadow-md shadow-amber-500/10'
+                      : 'border-zinc-800 bg-[#131313] text-zinc-400 hover:text-zinc-200 hover:border-zinc-700'
                   }`}
                 >
                   {lvl}
@@ -146,11 +146,11 @@ export default function Onboarding() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full flex items-center justify-center gap-2 py-3 rounded-lg bg-indigo-600 hover:bg-indigo-500 disabled:bg-indigo-800 font-semibold text-sm transition-all shadow-md shadow-indigo-600/20 mt-8"
+            className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-[#f0a924] hover:bg-[#e09b1f] disabled:bg-amber-800/40 text-black font-extrabold text-sm transition-all shadow-md shadow-amber-500/10 hover:scale-[1.01] mt-8 cursor-pointer"
           >
             {loading ? (
               <>
-                <Loader2 className="w-4 h-4 animate-spin" /> Saving Onboarding Profile...
+                <Loader2 className="w-4 h-4 animate-spin text-black" /> Saving Onboarding Profile...
               </>
             ) : (
               <>

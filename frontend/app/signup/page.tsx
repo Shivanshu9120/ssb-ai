@@ -4,13 +4,14 @@ import React, { useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Mail, Lock, User as UserIcon, Loader2 } from 'lucide-react';
+import { Mail, Lock, User as UserIcon, Loader2, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 
 export default function Signup() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
@@ -68,18 +69,18 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col justify-center items-center px-4 relative">
-      <div className="absolute top-1/4 left-1/3 w-80 h-80 bg-indigo-600/5 rounded-full blur-3xl pointer-events-none" />
+    <div className="min-h-screen bg-[#131313] flex flex-col justify-center items-center px-4 relative select-none">
+      <div className="absolute top-1/4 left-1/3 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
       
-      <div className="w-full max-w-md p-8 rounded-2xl border border-slate-900 bg-slate-900/20 backdrop-blur-md shadow-2xl relative">
+      <div className="w-full max-w-md p-8 rounded-2xl border border-zinc-800 bg-[#18181b]/90 backdrop-blur-md shadow-2xl relative">
         <div className="flex flex-col items-center gap-2 mb-8 text-center">
           <img
             src="/SSBAI-logo.png"
             alt="SSB AI Logo"
             className="w-12 h-12 object-contain rounded-xl shadow-lg border border-amber-500/20 mb-1"
           />
-          <h2 className="text-2xl font-extrabold tracking-tight text-white">Create Account</h2>
-          <p className="text-xs text-slate-400">Join the premium SSB AI prep platform</p>
+          <h2 className="text-2xl font-extrabold tracking-tight text-zinc-100">Create Account</h2>
+          <p className="text-xs text-zinc-400">Join the premium SSB AI prep platform</p>
         </div>
 
         {error && (
@@ -95,58 +96,66 @@ export default function Signup() {
         ) : (
           <form onSubmit={handleSignup} className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-400 mb-1.5">Candidate Full Name</label>
+              <label className="block text-xs font-semibold text-zinc-400 mb-1.5">Candidate Full Name</label>
               <div className="relative">
-                <UserIcon className="absolute left-3 top-3 w-4 h-4 text-slate-500" />
+                <UserIcon className="absolute left-3 top-3 w-4 h-4 text-zinc-500" />
                 <input
                   type="text"
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Rahul Singh"
-                  className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-800 bg-slate-950/80 text-slate-100 text-sm focus:border-indigo-600 focus:outline-none transition-colors"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-zinc-800 bg-[#131313] text-zinc-100 placeholder-zinc-600 text-sm focus:border-amber-500/60 focus:outline-none transition-colors"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-400 mb-1.5">Email Address</label>
+              <label className="block text-xs font-semibold text-zinc-400 mb-1.5">Email Address</label>
               <div className="relative">
-                <Mail className="absolute left-3 top-3 w-4 h-4 text-slate-500" />
+                <Mail className="absolute left-3 top-3 w-4 h-4 text-zinc-500" />
                 <input
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="rahul@exam.com"
-                  className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-800 bg-slate-950/80 text-slate-100 text-sm focus:border-indigo-600 focus:outline-none transition-colors"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-zinc-800 bg-[#131313] text-zinc-100 placeholder-zinc-600 text-sm focus:border-amber-500/60 focus:outline-none transition-colors"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-400 mb-1.5">Password</label>
+              <label className="block text-xs font-semibold text-zinc-400 mb-1.5">Password</label>
               <div className="relative">
-                <Lock className="absolute left-3 top-3 w-4 h-4 text-slate-500" />
+                <Lock className="absolute left-3 top-3 w-4 h-4 text-zinc-500" />
                 <input
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-800 bg-slate-950/80 text-slate-100 text-sm focus:border-indigo-600 focus:outline-none transition-colors"
+                  className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-zinc-800 bg-[#131313] text-zinc-100 placeholder-zinc-600 text-sm focus:border-amber-500/60 focus:outline-none transition-colors"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-2.5 p-1 text-zinc-500 hover:text-zinc-300 transition-colors focus:outline-none cursor-pointer"
+                  title={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
               </div>
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex items-center justify-center gap-2 py-3 rounded-lg bg-indigo-600 hover:bg-indigo-500 disabled:bg-indigo-800 font-semibold text-sm transition-all shadow-md shadow-indigo-600/20 mt-6"
+              className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-[#f0a924] hover:bg-[#e09b1f] disabled:bg-amber-800/40 text-black font-extrabold text-sm transition-all shadow-md shadow-amber-500/10 hover:scale-[1.01] mt-6 cursor-pointer"
             >
               {loading ? (
                 <>
-                  <Loader2 className="w-4 h-4 animate-spin" /> Creating Account...
+                  <Loader2 className="w-4 h-4 animate-spin text-black" /> Creating Account...
                 </>
               ) : (
                 'Sign Up'
@@ -155,15 +164,15 @@ export default function Signup() {
           </form>
         )}
 
-        <p className="mt-8 text-center text-xs text-slate-400">
+        <p className="mt-8 text-center text-xs text-zinc-400">
           Already have an account?{' '}
-          <Link href="/login" className="text-indigo-400 font-semibold hover:underline">
+          <Link href="/login" className="text-amber-400 font-semibold hover:text-amber-300 hover:underline">
             Log In
           </Link>
         </p>
       </div>
 
-      <Link href="/" className="mt-6 text-xs text-slate-500 hover:text-slate-400 font-medium">
+      <Link href="/" className="mt-6 text-xs text-zinc-500 hover:text-zinc-300 font-medium transition-colors">
         ← Back to Homepage
       </Link>
     </div>
