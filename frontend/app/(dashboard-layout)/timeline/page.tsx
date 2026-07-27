@@ -50,16 +50,16 @@ export default function TimelinePage() {
   return (
     <div className="p-5 lg:p-8 max-w-4xl mx-auto space-y-8 select-none">
       <div>
-        <h2 className="text-xl font-extrabold text-white flex items-center gap-2">
-          <Calendar className="w-5 h-5 text-amber-500" /> SSB 5-Day Selection Board Journey
+        <h2 className="text-xl font-extrabold theme-text-primary flex items-center gap-2">
+          <Calendar className="w-5 h-5 theme-accent-text" /> SSB 5-Day Selection Board Journey
         </h2>
-        <p className="text-xs text-zinc-400 mt-1 max-w-xl">
+        <p className="text-xs theme-text-muted mt-1 max-w-xl">
           Understand the breakdown of the assessment days. Use the chatbot to practice tests corresponding to your active preparation day.
         </p>
       </div>
 
       {/* Progress summary banner */}
-      <div className="p-4 rounded-xl border border-amber-500/10 bg-amber-500/5 text-amber-500 text-xs flex items-center gap-3">
+      <div className="p-4 rounded-xl border theme-accent-border bg-[var(--theme-accent-bg-subtle)] theme-accent-text text-xs flex items-center gap-3">
         <Info className="w-4 h-4 flex-shrink-0" />
         <div>
           Your active training is focused on <strong className="underline">Day 2 Psychology (TAT/WAT/SRT)</strong> based on your onboarding level (<strong>{profile?.profile?.level || 'Beginner'}</strong> candidate).
@@ -67,7 +67,7 @@ export default function TimelinePage() {
       </div>
 
       {/* Vertical Timeline */}
-      <div className="space-y-6 relative border-l border-zinc-800 ml-3 pl-6">
+      <div className="space-y-6 relative border-l theme-border ml-3 pl-6">
         {schedule.map((step) => {
           const isCompleted = step.status === 'completed';
           const isActive = step.status === 'active';
@@ -77,10 +77,10 @@ export default function TimelinePage() {
               {/* Point Node bullet */}
               <div className={`absolute -left-[31px] top-1.5 w-4 h-4 rounded-full flex items-center justify-center border-2 ${
                 isCompleted 
-                  ? 'bg-amber-500 border-amber-500 text-black' 
+                  ? 'theme-accent-bg theme-accent-border' 
                   : isActive
-                    ? 'bg-[#1e1e1f] border-amber-500 text-amber-500 animate-pulse'
-                    : 'bg-[#1e1e1f] border-zinc-800 text-zinc-600'
+                    ? 'theme-bg-app theme-accent-border theme-accent-text animate-pulse'
+                    : 'theme-bg-app theme-border theme-text-muted'
               }`}>
                 {isCompleted && <CheckCircle2 className="w-3 h-3 stroke-[3]" />}
               </div>
@@ -88,29 +88,29 @@ export default function TimelinePage() {
               {/* Card content */}
               <div className={`p-5 rounded-2xl border transition-all ${
                 isActive 
-                  ? 'bg-[#131313] border-amber-500/20 shadow-md shadow-amber-500/5' 
-                  : 'bg-[#131313]/60 border-zinc-900'
+                  ? 'theme-bg-card theme-accent-border shadow-md theme-accent-glow' 
+                  : 'theme-bg-card theme-border'
               }`}>
                 <div className="flex items-center justify-between gap-2">
                   <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded ${
                     isCompleted 
-                      ? 'bg-zinc-800 text-zinc-400' 
+                      ? 'theme-bg-input theme-text-muted' 
                       : isActive 
-                        ? 'bg-amber-500/10 text-amber-500' 
-                        : 'bg-zinc-950 text-zinc-600'
+                        ? 'bg-[var(--theme-accent-bg-subtle)] theme-accent-text' 
+                        : 'theme-bg-input theme-text-muted'
                   }`}>
                     {step.day} — {step.status.toUpperCase()}
                   </span>
                 </div>
                 
-                <h4 className="font-extrabold text-sm text-zinc-100 mt-2">{step.title}</h4>
-                <p className="text-xs text-zinc-400 mt-1 leading-relaxed">{step.desc}</p>
+                <h4 className="font-extrabold text-sm theme-text-primary mt-2">{step.title}</h4>
+                <p className="text-xs theme-text-muted mt-1 leading-relaxed">{step.desc}</p>
                 
                 {/* Expert Guidance Tips */}
-                <div className="mt-4 pt-3.5 border-t border-zinc-900/60 text-[11px] text-zinc-500 flex gap-2">
-                  <AlertCircle className="w-3.5 h-3.5 text-amber-500/60 flex-shrink-0 mt-0.5" />
+                <div className="mt-4 pt-3.5 border-t theme-border-subtle text-[11px] theme-text-muted flex gap-2">
+                  <AlertCircle className="w-3.5 h-3.5 theme-accent-text opacity-70 flex-shrink-0 mt-0.5" />
                   <div>
-                    <span className="font-bold text-zinc-300">Expert Tip:</span> {step.tips}
+                    <span className="font-bold theme-text-secondary">Expert Tip:</span> {step.tips}
                   </div>
                 </div>
               </div>

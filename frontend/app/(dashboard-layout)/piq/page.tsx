@@ -71,12 +71,12 @@ const defaultPIQ: PIQData = {
 
 function SectionCard({ title, icon: Icon, children }: { title: string; icon: any; children: React.ReactNode }) {
   return (
-    <div className="bg-[#111]/80 rounded-2xl border border-zinc-800/60 p-5 backdrop-blur">
+    <div className="theme-bg-card rounded-2xl border theme-border p-5 backdrop-blur">
       <div className="flex items-center gap-2 mb-4">
-        <div className="w-7 h-7 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
-          <Icon className="w-3.5 h-3.5 text-amber-500" />
+        <div className="w-7 h-7 rounded-lg bg-[var(--theme-accent-bg-subtle)] border theme-accent-border flex items-center justify-center">
+          <Icon className="w-3.5 h-3.5 theme-accent-text" />
         </div>
-        <h3 className="text-sm font-bold text-zinc-200">{title}</h3>
+        <h3 className="text-sm font-bold theme-text-primary">{title}</h3>
       </div>
       {children}
     </div>
@@ -86,27 +86,27 @@ function SectionCard({ title, icon: Icon, children }: { title: string; icon: any
 function Field({ label, value }: { label: string; value: string | null | undefined }) {
   return (
     <div className="mb-3">
-      <p className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider mb-0.5">{label}</p>
-      <p className="text-sm text-zinc-200">{value || <span className="text-zinc-600 italic">Not filled</span>}</p>
+      <p className="text-[10px] font-semibold theme-text-muted uppercase tracking-wider mb-0.5">{label}</p>
+      <p className="text-sm theme-text-primary">{value || <span className="theme-text-muted italic">Not filled</span>}</p>
     </div>
   );
 }
 
 function TableView({ headers, rows }: { headers: string[]; rows: (string | null | undefined)[][] }) {
   return (
-    <div className="overflow-x-auto rounded-xl border border-zinc-800">
+    <div className="overflow-x-auto rounded-xl border theme-border">
       <table className="w-full text-xs">
         <thead>
-          <tr className="bg-zinc-900">
-            {headers.map(h => <th key={h} className="px-3 py-2 text-left text-zinc-400 font-semibold border-r border-zinc-800 last:border-r-0 whitespace-nowrap">{h}</th>)}
+          <tr className="theme-bg-input">
+            {headers.map(h => <th key={h} className="px-3 py-2 text-left theme-text-muted font-semibold border-r theme-border-subtle last:border-r-0 whitespace-nowrap">{h}</th>)}
           </tr>
         </thead>
         <tbody>
           {rows.map((row, i) => (
-            <tr key={i} className="border-t border-zinc-800/60 hover:bg-zinc-900/20 transition-colors">
+            <tr key={i} className="border-t theme-border-subtle hover:theme-bg-card-hover transition-colors">
               {row.map((cell, j) => (
-                <td key={j} className="px-3 py-2 text-zinc-300 border-r border-zinc-800 last:border-r-0">
-                  {cell || <span className="text-zinc-600 italic">—</span>}
+                <td key={j} className="px-3 py-2 theme-text-secondary border-r theme-border-subtle last:border-r-0">
+                  {cell || <span className="theme-text-muted italic">—</span>}
                 </td>
               ))}
             </tr>
@@ -123,16 +123,16 @@ const TAB_ICONS = [User, Users, GraduationCap, Activity, Shield];
 function CompletionBadge({ steps }: { steps: number }) {
   const pct = Math.round((steps / 5) * 100);
   return (
-    <div className="bg-[#111]/80 rounded-2xl border border-zinc-800/60 p-5 backdrop-blur">
+    <div className="theme-bg-card rounded-2xl border theme-border p-5 backdrop-blur">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-sm font-bold text-zinc-200">PIQ Completion</h3>
-        <span className={`text-xs font-bold px-2 py-1 rounded-full ${pct === 100 ? 'bg-green-500/10 text-green-400 border border-green-500/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'}`}>
+        <h3 className="text-sm font-bold theme-text-primary">PIQ Completion</h3>
+        <span className={`text-xs font-bold px-2 py-1 rounded-full ${pct === 100 ? 'bg-green-500/10 text-green-400 border border-green-500/20' : 'bg-[var(--theme-accent-bg-subtle)] theme-accent-text border theme-accent-border'}`}>
           {pct}% Complete
         </span>
       </div>
-      <div className="h-2 bg-zinc-800 rounded-full mb-4 overflow-hidden">
+      <div className="h-2 theme-bg-input rounded-full mb-4 overflow-hidden border theme-border-subtle">
         <div
-          className="h-full bg-gradient-to-r from-amber-500 to-amber-400 rounded-full transition-all duration-700"
+          className="h-full theme-accent-bg rounded-full transition-all duration-700"
           style={{ width: `${pct}%` }}
         />
       </div>
@@ -141,7 +141,7 @@ function CompletionBadge({ steps }: { steps: number }) {
           const Icon = TAB_ICONS[idx];
           const done = idx < steps;
           return (
-            <div key={label} className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium border ${done ? 'bg-green-500/10 border-green-500/20 text-green-400' : 'bg-zinc-900 border-zinc-800 text-zinc-500'}`}>
+            <div key={label} className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium border ${done ? 'bg-green-500/10 border-green-500/20 text-green-400' : 'theme-bg-input theme-border theme-text-muted'}`}>
               {done ? <CheckCircle2 className="w-3 h-3" /> : <Icon className="w-3 h-3" />}
               {label}
             </div>
@@ -155,9 +155,9 @@ function CompletionBadge({ steps }: { steps: number }) {
 // ---------------------------------------------------------------------------
 // Editor Form Shared Components
 // ---------------------------------------------------------------------------
-const inp = 'w-full px-3 py-2 rounded-lg border border-zinc-700 bg-[#0f0f0f] text-zinc-100 text-sm placeholder-zinc-600 focus:border-amber-500/60 focus:outline-none transition-colors';
-const lbl = 'block text-xs font-semibold text-zinc-400 mb-1';
-const sectionTitle = 'text-xs font-bold text-amber-500 uppercase tracking-widest mb-3 flex items-center gap-2';
+const inp = 'w-full px-3 py-2 rounded-lg border theme-border theme-bg-input theme-text-primary text-sm placeholder:theme-text-muted focus:theme-accent-border focus:outline-none transition-colors';
+const lbl = 'block text-xs font-semibold theme-text-secondary mb-1';
+const sectionTitle = 'text-xs font-bold theme-accent-text uppercase tracking-widest mb-3 flex items-center gap-2';
 
 function PersonalTab({ data, setData }: { data: PIQData; setData: (d: PIQData) => void }) {
   const upd = (key: keyof PIQData, val: any) => setData({ ...data, [key]: val });

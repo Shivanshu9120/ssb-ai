@@ -136,27 +136,27 @@ export default function ProfilePage() {
       )}
 
       {/* Main Profile Summary Card */}
-      <div className="p-6 md:p-8 rounded-2xl bg-[#131313] border border-zinc-900 shadow-xl space-y-6 relative overflow-hidden">
+      <div className="p-6 md:p-8 rounded-2xl theme-bg-card border theme-border shadow-xl space-y-6 relative overflow-hidden">
         {/* Glow effect background */}
-        <div className="absolute -top-24 -right-24 w-60 h-60 bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -top-24 -right-24 w-60 h-60 bg-[var(--theme-accent-bg-subtle)] rounded-full blur-3xl pointer-events-none" />
 
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-zinc-900 pb-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b theme-border-subtle pb-6">
           <div className="flex items-center gap-4">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-amber-500 to-amber-300 border-2 border-amber-500/30 flex items-center justify-center font-black text-2xl text-black shadow-lg shadow-amber-500/10">
+            <div className="w-16 h-16 rounded-2xl theme-accent-bg border-2 theme-accent-border flex items-center justify-center font-black text-2xl shadow-lg flex-shrink-0">
               {profile?.name ? profile.name.slice(0, 2).toUpperCase() : user?.email ? user.email.slice(0, 2).toUpperCase() : 'CD'}
             </div>
             <div>
-              <h2 className="text-lg font-bold text-white flex items-center gap-2">
+              <h2 className="text-lg font-bold theme-text-primary flex items-center gap-2">
                 {profile?.name || user?.email?.split('@')[0]}
-                <span className="px-2 py-0.5 rounded-md bg-amber-500/10 border border-amber-500/20 text-amber-400 text-[10px] font-extrabold uppercase tracking-wider">
+                <span className="px-2 py-0.5 rounded-md bg-[var(--theme-accent-bg-subtle)] border theme-accent-border theme-accent-text text-[10px] font-extrabold uppercase tracking-wider">
                   {profile?.plan || 'Free Cadre'}
                 </span>
               </h2>
-              <p className="text-xs text-zinc-400 flex items-center gap-1.5 mt-0.5">
-                <Mail className="w-3.5 h-3.5 text-zinc-500" /> {user?.email || 'N/A'}
+              <p className="text-xs theme-text-muted flex items-center gap-1.5 mt-0.5">
+                <Mail className="w-3.5 h-3.5 theme-text-muted" /> {user?.email || 'N/A'}
               </p>
-              <p className="text-[11px] text-zinc-500 flex items-center gap-1.5 mt-1">
-                <Calendar className="w-3.5 h-3.5 text-zinc-600" /> Joined {memberSince}
+              <p className="text-[11px] theme-text-muted flex items-center gap-1.5 mt-1">
+                <Calendar className="w-3.5 h-3.5 theme-text-muted" /> Joined {memberSince}
               </p>
             </div>
           </div>
@@ -164,9 +164,9 @@ export default function ProfilePage() {
           {!isEditing && (
             <button
               onClick={() => setIsEditing(true)}
-              className="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 hover:text-white font-bold text-xs flex items-center gap-2 transition-all shadow-sm"
+              className="px-4 py-2 rounded-xl theme-accent-bg theme-accent-bg-hover font-bold text-xs flex items-center gap-2 transition-all shadow-sm cursor-pointer"
             >
-              <Edit3 className="w-3.5 h-3.5 text-amber-500" /> Edit Profile
+              <Edit3 className="w-3.5 h-3.5 text-current" /> Edit Profile
             </button>
           )}
         </div>
@@ -176,38 +176,38 @@ export default function ProfilePage() {
           /* View Mode */
           <>
           <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="p-4 rounded-xl bg-[#1b1b1b] border border-zinc-900 space-y-1">
-              <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider flex items-center gap-1.5">
-                <Target className="w-3.5 h-3.5 text-amber-500" /> Target Exam
+            <div className="p-4 rounded-xl theme-bg-input border theme-border space-y-1">
+              <span className="text-[10px] font-bold theme-text-muted uppercase tracking-wider flex items-center gap-1.5">
+                <Target className="w-3.5 h-3.5 theme-accent-text" /> Target Exam
               </span>
-              <p className="text-sm font-extrabold text-zinc-100">
+              <p className="text-sm font-extrabold theme-text-primary">
                 {profile?.piq_profile?.exam || 'Army'}
               </p>
             </div>
 
-            <div className="p-4 rounded-xl bg-[#1b1b1b] border border-zinc-900 space-y-1">
-              <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider flex items-center gap-1.5">
-                <Briefcase className="w-3.5 h-3.5 text-amber-500" /> Service Branch
+            <div className="p-4 rounded-xl theme-bg-input border theme-border space-y-1">
+              <span className="text-[10px] font-bold theme-text-muted uppercase tracking-wider flex items-center gap-1.5">
+                <Briefcase className="w-3.5 h-3.5 theme-accent-text" /> Service Branch
               </span>
-              <p className="text-sm font-extrabold text-zinc-100">
+              <p className="text-sm font-extrabold theme-text-primary">
                 {profile?.piq_profile?.choice_of_service || 'Not set'}
               </p>
             </div>
 
-            <div className="p-4 rounded-xl bg-[#1b1b1b] border border-zinc-900 space-y-1">
-              <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider flex items-center gap-1.5">
-                <Award className="w-3.5 h-3.5 text-amber-500" /> Attempt Status
+            <div className="p-4 rounded-xl theme-bg-input border theme-border space-y-1">
+              <span className="text-[10px] font-bold theme-text-muted uppercase tracking-wider flex items-center gap-1.5">
+                <Award className="w-3.5 h-3.5 theme-accent-text" /> Attempt Status
               </span>
-              <p className="text-sm font-extrabold text-zinc-100">
+              <p className="text-sm font-extrabold theme-text-primary">
                 {isFresher ? '1st Attempt (Fresher)' : `${profile?.piq_profile?.commission_attempts || attempt} Attempt(s) (Repeater)`}
               </p>
             </div>
 
-            <div className="p-4 rounded-xl bg-[#1b1b1b] border border-zinc-900 space-y-1">
-              <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider flex items-center gap-1.5">
-                <ShieldCheck className="w-3.5 h-3.5 text-amber-500" /> Preparation Level
+            <div className="p-4 rounded-xl theme-bg-input border theme-border space-y-1">
+              <span className="text-[10px] font-bold theme-text-muted uppercase tracking-wider flex items-center gap-1.5">
+                <ShieldCheck className="w-3.5 h-3.5 theme-accent-text" /> Preparation Level
               </span>
-              <p className="text-sm font-extrabold text-zinc-100">
+              <p className="text-sm font-extrabold theme-text-primary">
                 {profile?.piq_profile?.level || 'Intermediate'}
               </p>
             </div>
@@ -215,7 +215,7 @@ export default function ProfilePage() {
 
           {/* Link to full PIQ form */}
           <div className="mt-2">
-            <Link href="/piq" className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-amber-500/20 bg-amber-500/5 text-amber-400 text-xs font-semibold hover:bg-amber-500/10 transition-colors">
+            <Link href="/piq" className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border theme-accent-border bg-[var(--theme-accent-bg-subtle)] theme-accent-text text-xs font-semibold hover:opacity-80 transition-colors">
               <FileText className="w-3.5 h-3.5" /> View / Edit Full PIQ Form <ChevronRight className="w-3 h-3" />
             </Link>
           </div>
@@ -226,13 +226,13 @@ export default function ProfilePage() {
             <div className="grid sm:grid-cols-2 gap-4">
               {/* Target Exam */}
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold text-zinc-300">
+                <label className="block text-xs font-bold theme-text-secondary">
                   Target Exam / Entry
                 </label>
                 <select
                   value={exam}
                   onChange={(e) => setExam(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#1b1b1b] border border-zinc-800 text-xs font-semibold text-white focus:outline-none focus:border-amber-500 transition-colors"
+                  className="w-full px-3.5 py-2.5 rounded-xl theme-bg-input border theme-border text-xs font-semibold theme-text-primary focus:outline-none focus:theme-accent-border transition-colors"
                 >
                   <option value="CDS">CDS (Combined Defence Services)</option>
                   <option value="NDA">NDA (National Defence Academy)</option>
@@ -245,13 +245,13 @@ export default function ProfilePage() {
 
               {/* Service Branch */}
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold text-zinc-300">
+                <label className="block text-xs font-bold theme-text-secondary">
                   Preferred Service Branch
                 </label>
                 <select
                   value={branch}
                   onChange={(e) => setBranch(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#1b1b1b] border border-zinc-800 text-xs font-semibold text-white focus:outline-none focus:border-amber-500 transition-colors"
+                  className="w-full px-3.5 py-2.5 rounded-xl theme-bg-input border theme-border text-xs font-semibold theme-text-primary focus:outline-none focus:theme-accent-border transition-colors"
                 >
                   <option value="Army">Army</option>
                   <option value="Navy">Navy</option>
@@ -264,13 +264,13 @@ export default function ProfilePage() {
 
               {/* Attempt Count */}
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold text-zinc-300">
+                <label className="block text-xs font-bold theme-text-secondary">
                   SSB Attempt Count
                 </label>
                 <select
                   value={attempt}
                   onChange={(e) => setAttempt(Number(e.target.value))}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#1b1b1b] border border-zinc-800 text-xs font-semibold text-white focus:outline-none focus:border-amber-500 transition-colors"
+                  className="w-full px-3.5 py-2.5 rounded-xl theme-bg-input border theme-border text-xs font-semibold theme-text-primary focus:outline-none focus:theme-accent-border transition-colors"
                 >
                   <option value={1}>1st Attempt (Fresher)</option>
                   <option value={2}>2nd Attempt (Repeater)</option>
@@ -282,13 +282,13 @@ export default function ProfilePage() {
 
               {/* Candidate Level */}
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold text-zinc-300">
+                <label className="block text-xs font-bold theme-text-secondary">
                   Current Coaching Level
                 </label>
                 <select
                   value={level}
                   onChange={(e) => setLevel(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#1b1b1b] border border-zinc-800 text-xs font-semibold text-white focus:outline-none focus:border-amber-500 transition-colors"
+                  className="w-full px-3.5 py-2.5 rounded-xl theme-bg-input border theme-border text-xs font-semibold theme-text-primary focus:outline-none focus:theme-accent-border transition-colors"
                 >
                   <option value="Beginner">Beginner (First Time Prep)</option>
                   <option value="Intermediate">Intermediate (Familiar with OLQ & Tests)</option>
@@ -298,19 +298,19 @@ export default function ProfilePage() {
             </div>
 
             {/* Form Actions */}
-            <div className="flex items-center justify-end gap-3 pt-4 border-t border-zinc-900">
+            <div className="flex items-center justify-end gap-3 pt-4 border-t theme-border-subtle">
               <button
                 type="button"
                 onClick={handleCancelEdit}
                 disabled={loading}
-                className="px-4 py-2 rounded-xl text-xs font-semibold text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
+                className="px-4 py-2 rounded-xl text-xs font-semibold theme-text-muted hover:theme-text-primary theme-bg-card-hover transition-colors"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={loading}
-                className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs flex items-center gap-2 transition-all shadow-md shadow-amber-500/10"
+                className="px-5 py-2 rounded-xl theme-accent-bg theme-accent-bg-hover font-extrabold text-xs flex items-center gap-2 transition-all shadow-md theme-accent-glow cursor-pointer"
               >
                 {loading ? (
                   <>
@@ -330,20 +330,20 @@ export default function ProfilePage() {
       </div>
 
       {/* Recommended Preparation Strategy Card */}
-      <div className="p-6 rounded-2xl bg-[#131313] border border-zinc-900 space-y-4">
-        <h3 className="text-sm font-extrabold text-white flex items-center gap-2">
-          <Sparkles className="w-4 h-4 text-amber-500" /> Tailored AI Evaluation Profile
+      <div className="p-6 rounded-2xl theme-bg-card border theme-border space-y-4">
+        <h3 className="text-sm font-extrabold theme-text-primary flex items-center gap-2">
+          <Sparkles className="w-4 h-4 theme-accent-text" /> Tailored AI Evaluation Profile
         </h3>
-        <p className="text-xs text-zinc-400 leading-relaxed">
-          Your active SSB Mentor AI uses your profile parameters (<strong className="text-zinc-200">{profile?.piq_profile?.exam || exam}</strong> • <strong className="text-zinc-200">{profile?.piq_profile?.choice_of_service || branch || 'Service not set'}</strong>) to tailor response evaluation depth, TAT story psychological factor analysis, and SRT situation difficulty.
+        <p className="text-xs theme-text-muted leading-relaxed">
+          Your active SSB Mentor AI uses your profile parameters (<strong className="theme-text-secondary">{profile?.piq_profile?.exam || exam}</strong> • <strong className="theme-text-secondary">{profile?.piq_profile?.choice_of_service || branch || 'Service not set'}</strong>) to tailor response evaluation depth, TAT story psychological factor analysis, and SRT situation difficulty.
         </p>
 
-        <div className="p-4 rounded-xl bg-[#1b1b1b] border border-zinc-800/80 flex items-center justify-between text-xs">
+        <div className="p-4 rounded-xl theme-bg-input border theme-border flex items-center justify-between text-xs">
           <div className="flex items-center gap-3">
-            <Zap className="w-5 h-5 text-amber-500 flex-shrink-0" />
+            <Zap className="w-5 h-5 theme-accent-text flex-shrink-0" />
             <div>
-              <span className="font-bold text-zinc-200 block">Vector RAG Context Optimization</span>
-              <span className="text-[11px] text-zinc-500">Retrieving specialized modules for {profile?.piq_profile?.choice_of_service || branch || 'your target branch'} candidates.</span>
+              <span className="font-bold theme-text-secondary block">Vector RAG Context Optimization</span>
+              <span className="text-[11px] theme-text-muted">Retrieving specialized modules for {profile?.piq_profile?.choice_of_service || branch || 'your target branch'} candidates.</span>
             </div>
           </div>
           <span className="px-2.5 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold">

@@ -163,14 +163,14 @@ export default function Dashboard() {
     <div className="p-5 lg:p-8 max-w-7xl mx-auto space-y-8 select-none">
       
       {/* Welcome & Overview section */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 rounded-2xl bg-[#131313] border border-zinc-900 shadow-md">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 rounded-2xl theme-bg-card border theme-border shadow-md">
         <div className="flex items-start gap-4">
-          <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-500 flex items-center justify-center flex-shrink-0">
+          <div className="w-12 h-12 rounded-xl bg-[var(--theme-accent-bg-subtle)] border theme-accent-border theme-accent-text flex items-center justify-center flex-shrink-0">
             <User className="w-6 h-6" />
           </div>
           <div>
-            <h2 className="text-lg font-extrabold text-white">Welcome back, {profile?.name || 'Candidate'}</h2>
-            <p className="text-xs text-zinc-400 max-w-lg mt-0.5">
+            <h2 className="text-lg font-extrabold theme-text-primary">Welcome back, {profile?.name || 'Candidate'}</h2>
+            <p className="text-xs theme-text-muted max-w-lg mt-0.5">
               Review your customized coaching credentials and manage your uploaded vector files below.
             </p>
           </div>
@@ -178,7 +178,7 @@ export default function Dashboard() {
         
         <Link 
           href="/chat"
-          className="px-4 py-2.5 rounded-xl bg-[#f0a924] hover:bg-[#e09b1f] text-black font-extrabold text-xs transition-all shadow-md shadow-amber-500/10 flex items-center gap-1.5 self-start md:self-auto"
+          className="px-4 py-2.5 rounded-xl theme-accent-bg theme-accent-bg-hover font-extrabold text-xs transition-all shadow-md theme-accent-glow flex items-center gap-1.5 self-start md:self-auto cursor-pointer"
         >
           <Plus className="w-4 h-4 stroke-[3]" /> Start Coaching session
         </Link>
@@ -188,30 +188,30 @@ export default function Dashboard() {
       <div className="grid lg:grid-cols-4 gap-6">
         
         {/* Left Column — PIQ Profile Card */}
-        <div className="lg:col-span-1 p-6 rounded-2xl bg-[#131313] border border-zinc-900 space-y-5">
-          <h3 className="text-xs font-bold text-amber-500 uppercase tracking-widest flex items-center gap-1.5">
+        <div className="lg:col-span-1 p-6 rounded-2xl theme-bg-card border theme-border space-y-5">
+          <h3 className="text-xs font-bold theme-accent-text uppercase tracking-widest flex items-center gap-1.5">
             <FileText className="w-4 h-4" /> PIQ Profile
           </h3>
 
           {/* PIQ Completion Progress */}
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <span className="text-[10px] text-zinc-500 uppercase font-semibold">Completion</span>
+              <span className="text-[10px] theme-text-muted uppercase font-semibold">Completion</span>
               <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
                 piqCompletedSteps === 5 ? 'bg-green-500/10 text-green-400 border border-green-500/20' :
-                piqCompletedSteps > 0 ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' :
-                'bg-zinc-800 text-zinc-500 border border-zinc-700'
+                piqCompletedSteps > 0 ? 'bg-[var(--theme-accent-bg-subtle)] theme-accent-text border theme-accent-border' :
+                'theme-bg-input theme-text-muted border theme-border-subtle'
               }`}>
                 {Math.round((piqCompletedSteps / 5) * 100)}%
               </span>
             </div>
-            <div className="w-full bg-zinc-900 h-1.5 rounded-full overflow-hidden mb-2">
+            <div className="w-full theme-bg-input h-1.5 rounded-full overflow-hidden mb-2 border theme-border-subtle">
               <div
-                className="h-full bg-gradient-to-r from-amber-500 to-amber-400 rounded-full transition-all duration-500"
+                className="h-full theme-accent-bg rounded-full transition-all duration-500"
                 style={{ width: `${Math.round((piqCompletedSteps / 5) * 100)}%` }}
               />
             </div>
-            <p className="text-[10px] text-zinc-500">
+            <p className="text-[10px] theme-text-muted">
               {piqCompletedSteps === 0 ? 'No sections filled yet' :
                piqCompletedSteps === 5 ? 'PIQ fully submitted ✓' :
                `${piqCompletedSteps} of 5 sections complete`}
@@ -221,58 +221,58 @@ export default function Dashboard() {
           {/* Profile fields from PIQ */}
           <div className="space-y-3 text-xs">
             <div>
-              <span className="block text-[10px] text-zinc-500 uppercase font-semibold">Target Service</span>
-              <span className="font-bold text-zinc-100">{profile?.piq_profile?.exam || 'Not set'}</span>
+              <span className="block text-[10px] theme-text-muted uppercase font-semibold">Target Service</span>
+              <span className="font-bold theme-text-primary">{profile?.piq_profile?.exam || 'Not set'}</span>
             </div>
             <div>
-              <span className="block text-[10px] text-zinc-500 uppercase font-semibold">Preparation Level</span>
-              <span className="inline-flex items-center px-2 py-0.5 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-500 font-bold mt-0.5">
+              <span className="block text-[10px] theme-text-muted uppercase font-semibold">Preparation Level</span>
+              <span className="inline-flex items-center px-2 py-0.5 rounded-lg bg-[var(--theme-accent-bg-subtle)] border theme-accent-border theme-accent-text font-bold mt-0.5">
                 {profile?.piq_profile?.level || 'Beginner'}
               </span>
             </div>
             {profile?.piq_profile?.nature_of_commission && (
               <div>
-                <span className="block text-[10px] text-zinc-500 uppercase font-semibold">Commission Type</span>
-                <span className="font-bold text-zinc-200">{profile.piq_profile.nature_of_commission}</span>
+                <span className="block text-[10px] theme-text-muted uppercase font-semibold">Commission Type</span>
+                <span className="font-bold theme-text-secondary">{profile.piq_profile.nature_of_commission}</span>
               </div>
             )}
           </div>
 
           {/* View/Edit PIQ button */}
-          <Link href="/piq" className="flex items-center justify-between w-full px-3 py-2.5 rounded-xl border border-zinc-800 bg-zinc-900/40 hover:border-amber-500/30 hover:bg-amber-500/5 transition-all group">
-            <span className="text-xs font-semibold text-zinc-400 group-hover:text-amber-400 transition-colors">
+          <Link href="/piq" className="flex items-center justify-between w-full px-3 py-2.5 rounded-xl border theme-border theme-bg-input hover:theme-accent-border transition-all group">
+            <span className="text-xs font-semibold theme-text-muted group-hover:theme-accent-text transition-colors">
               {piqCompletedSteps === 0 ? 'Start PIQ Form' : 'View / Edit PIQ'}
             </span>
-            <ChevronRight className="w-3.5 h-3.5 text-zinc-600 group-hover:text-amber-500 transition-colors" />
+            <ChevronRight className="w-3.5 h-3.5 theme-text-muted group-hover:theme-accent-text transition-colors" />
           </Link>
         </div>
 
         {/* Right Columns Quick Metrics */}
         <div className="lg:col-span-3 grid sm:grid-cols-3 gap-6">
-          <div className="p-5 rounded-2xl bg-[#131313] border border-zinc-900 flex items-center justify-between">
+          <div className="p-5 rounded-2xl theme-bg-card border theme-border flex items-center justify-between">
             <div>
-              <span className="block text-xs text-zinc-500 font-semibold mb-1">Billing Plan</span>
-              <span className="font-bold text-base text-zinc-200">{profile?.plan || 'Free'} Tier</span>
+              <span className="block text-xs theme-text-muted font-semibold mb-1">Billing Plan</span>
+              <span className="font-bold text-base theme-text-secondary">{profile?.plan || 'Free'} Tier</span>
             </div>
-            <Award className="w-8 h-8 text-amber-500/70" />
+            <Award className="w-8 h-8 theme-accent-text opacity-70" />
           </div>
 
-          <div className="p-5 rounded-2xl bg-[#131313] border border-zinc-900 flex flex-col justify-between">
+          <div className="p-5 rounded-2xl theme-bg-card border theme-border flex flex-col justify-between">
             <div className="flex items-center justify-between mb-1.5">
-              <span className="text-xs text-zinc-500 font-semibold">Today's Token Quota</span>
-              <span className="text-[10px] text-zinc-400 font-mono">{(todayUsage.total_tokens / 1000).toFixed(1)}k / 100k</span>
+              <span className="text-xs theme-text-muted font-semibold">Today's Token Quota</span>
+              <span className="text-[10px] theme-text-secondary font-mono">{(todayUsage.total_tokens / 1000).toFixed(1)}k / 100k</span>
             </div>
-            <div className="w-full bg-zinc-900 h-2 rounded-full overflow-hidden">
+            <div className="w-full theme-bg-input h-2 rounded-full overflow-hidden border theme-border-subtle">
               <div 
-                className="bg-amber-500 h-full rounded-full transition-all duration-300"
+                className="theme-accent-bg h-full rounded-full transition-all duration-300"
                 style={{ width: `${tokenQuotaPercent}%` }}
               />
             </div>
           </div>
 
-          <div className="p-5 rounded-2xl bg-[#131313] border border-zinc-900 flex items-center justify-between">
+          <div className="p-5 rounded-2xl theme-bg-card border theme-border flex items-center justify-between">
             <div>
-              <span className="block text-xs text-zinc-500 font-semibold mb-1">Estimated Cost (Today)</span>
+              <span className="block text-xs theme-text-muted font-semibold mb-1">Estimated Cost (Today)</span>
               <span className="font-bold text-base text-emerald-400 font-mono">${todayUsage.cost.toFixed(5)}</span>
             </div>
             <TrendingUp className="w-8 h-8 text-emerald-400/80" />
@@ -283,13 +283,13 @@ export default function Dashboard() {
 
       {/* Tabs navigation */}
       <div className="space-y-6">
-        <div className="flex border-b border-zinc-900">
+        <div className="flex border-b theme-border">
           <button
             onClick={() => setActiveTab('chats')}
-            className={`py-3 px-6 font-bold text-sm border-b-2 transition-all ${
+            className={`py-3 px-6 font-bold text-sm border-b-2 transition-all cursor-pointer ${
               activeTab === 'chats'
-                ? 'border-amber-500 text-amber-500'
-                : 'border-transparent text-zinc-400 hover:text-zinc-300'
+                ? 'theme-accent-border theme-accent-text border-b-2'
+                : 'border-transparent theme-text-muted hover:theme-text-secondary'
             }`}
           >
             Recent Chats
@@ -297,10 +297,10 @@ export default function Dashboard() {
           {isAdmin && (
             <button
               onClick={() => setActiveTab('admin')}
-              className={`py-3 px-6 font-bold text-sm border-b-2 transition-all ${
+              className={`py-3 px-6 font-bold text-sm border-b-2 transition-all cursor-pointer ${
                 activeTab === 'admin'
-                  ? 'border-amber-500 text-amber-500'
-                  : 'border-transparent text-zinc-400 hover:text-zinc-300'
+                  ? 'theme-accent-border theme-accent-text border-b-2'
+                  : 'border-transparent theme-text-muted hover:theme-text-secondary'
               }`}
             >
               Admin Knowledge Base
@@ -312,16 +312,16 @@ export default function Dashboard() {
         {activeTab === 'chats' && (
           <div className="space-y-4">
             {loadingHistory ? (
-              <div className="flex items-center justify-center py-20 text-zinc-500">
-                <Loader2 className="w-6 h-6 animate-spin text-amber-500 mr-2" /> Loading conversations...
+              <div className="flex items-center justify-center py-20 theme-text-muted">
+                <Loader2 className="w-6 h-6 animate-spin theme-accent-text mr-2" /> Loading conversations...
               </div>
             ) : chats.length === 0 ? (
-              <div className="text-center py-16 border border-dashed border-zinc-900 bg-[#131313] rounded-2xl flex flex-col items-center gap-3">
-                <MessageSquare className="w-8 h-8 text-zinc-700" />
-                <p className="text-sm text-zinc-400">No active conversations yet.</p>
+              <div className="text-center py-16 border border-dashed theme-border theme-bg-card rounded-2xl flex flex-col items-center gap-3">
+                <MessageSquare className="w-8 h-8 theme-text-muted" />
+                <p className="text-sm theme-text-muted">No active conversations yet.</p>
                 <Link 
                   href="/chat"
-                  className="mt-1 text-xs font-bold text-amber-500 hover:text-amber-400 flex items-center gap-1"
+                  className="mt-1 text-xs font-bold theme-accent-text hover:opacity-80 flex items-center gap-1"
                 >
                   Start your first chat <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
@@ -332,17 +332,17 @@ export default function Dashboard() {
                   <Link
                     key={chat.id}
                     href={`/chat?id=${chat.id}`}
-                    className="p-4 rounded-xl border border-zinc-900 bg-[#131313] hover:bg-zinc-800/20 flex items-center justify-between transition-all group shadow-sm hover:scale-[1.005]"
+                    className="p-4 rounded-xl border theme-border theme-bg-card hover:theme-bg-card-hover flex items-center justify-between transition-all group shadow-sm hover:scale-[1.005]"
                   >
                     <div className="flex items-center gap-3 overflow-hidden">
-                      <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-500 flex-shrink-0">
+                      <div className="w-8 h-8 rounded-lg bg-[var(--theme-accent-bg-subtle)] border theme-accent-border flex items-center justify-center theme-accent-text flex-shrink-0">
                         <MessageSquare className="w-4 h-4" />
                       </div>
                       <div className="overflow-hidden">
-                        <h4 className="font-bold text-sm text-zinc-200 group-hover:text-white transition-colors truncate">
+                        <h4 className="font-bold text-sm theme-text-secondary group-hover:theme-text-primary transition-colors truncate">
                           {chat.title || 'Untitled Chat'}
                         </h4>
-                        <span className="text-[10px] text-zinc-500 font-semibold block mt-0.5">
+                        <span className="text-[10px] theme-text-muted font-semibold block mt-0.5">
                           Created: {new Date(chat.created_at).toLocaleDateString()}
                         </span>
                       </div>

@@ -152,17 +152,17 @@ export default function BillingPage() {
       {/* Grid: Current Plan & Token Usage Overview */}
       <div className="grid md:grid-cols-3 gap-6">
         {/* Current Plan Summary Card */}
-        <div className="p-6 rounded-2xl bg-[#131313] border border-zinc-900 shadow-xl flex flex-col justify-between relative overflow-hidden">
+        <div className="p-6 rounded-2xl theme-bg-card border theme-border shadow-xl flex flex-col justify-between relative overflow-hidden">
           <div className="space-y-3">
-            <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest block">
+            <span className="text-[10px] font-bold theme-text-muted uppercase tracking-widest block">
               Active Tier
             </span>
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-500">
+              <div className="w-10 h-10 rounded-xl bg-[var(--theme-accent-bg-subtle)] border theme-accent-border flex items-center justify-center theme-accent-text">
                 <Award className="w-6 h-6" />
               </div>
               <div>
-                <h2 className="text-lg font-bold text-white">{currentPlanName}</h2>
+                <h2 className="text-lg font-bold theme-text-primary">{currentPlanName}</h2>
                 <span className="text-xs text-emerald-400 font-semibold flex items-center gap-1">
                   <ShieldCheck className="w-3.5 h-3.5" /> Subscription Active
                 </span>
@@ -170,56 +170,56 @@ export default function BillingPage() {
             </div>
           </div>
 
-          <div className="pt-6 border-t border-zinc-900 mt-4 space-y-1">
-            <span className="text-xs text-zinc-400 font-medium block">Included Token Allowance</span>
-            <span className="text-sm font-extrabold text-amber-400 font-mono">100,000 Tokens / Day</span>
+          <div className="pt-6 border-t theme-border-subtle mt-4 space-y-1">
+            <span className="text-xs theme-text-muted font-medium block">Included Token Allowance</span>
+            <span className="text-sm font-extrabold theme-accent-text font-mono">100,000 Tokens / Day</span>
           </div>
         </div>
 
         {/* Daily Token Usage Meter */}
-        <div className="p-6 rounded-2xl bg-[#131313] border border-zinc-900 shadow-xl flex flex-col justify-between md:col-span-2 space-y-4">
+        <div className="p-6 rounded-2xl theme-bg-card border theme-border shadow-xl flex flex-col justify-between md:col-span-2 space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-extrabold text-white flex items-center gap-2">
-                <Cpu className="w-4 h-4 text-amber-500" /> Daily Token Usage
+              <h3 className="text-sm font-extrabold theme-text-primary flex items-center gap-2">
+                <Cpu className="w-4 h-4 theme-accent-text" /> Daily Token Usage
               </h3>
-              <p className="text-xs text-zinc-400 mt-0.5">
+              <p className="text-xs theme-text-muted mt-0.5">
                 Real-time tracking of Gemini model tokens used in vector search and chat queries today.
               </p>
             </div>
-            <span className="text-xs font-mono font-bold text-zinc-300 bg-zinc-900 px-3 py-1 rounded-lg border border-zinc-800">
+            <span className="text-xs font-mono font-bold theme-text-secondary theme-bg-input px-3 py-1 rounded-lg border theme-border">
               {(totalTokens / 1000).toFixed(1)}k / 100k
             </span>
           </div>
 
           {/* Progress bar */}
           <div className="space-y-2">
-            <div className="w-full bg-zinc-900 h-3 rounded-full overflow-hidden p-0.5 border border-zinc-800">
+            <div className="w-full theme-bg-input h-3 rounded-full overflow-hidden p-0.5 border theme-border-subtle">
               <div 
-                className="bg-gradient-to-r from-amber-500 to-amber-300 h-full rounded-full transition-all duration-500 shadow-sm shadow-amber-500/30"
+                className="theme-accent-bg h-full rounded-full transition-all duration-500 shadow-sm theme-accent-glow"
                 style={{ width: `${tokenQuotaPercent}%` }}
               />
             </div>
-            <div className="flex items-center justify-between text-[11px] text-zinc-500">
+            <div className="flex items-center justify-between text-[11px] theme-text-muted">
               <span>{tokenQuotaPercent.toFixed(1)}% of daily quota consumed</span>
               <span>Resets automatically at 00:00 UTC</span>
             </div>
           </div>
 
           {/* Metrics summary footer */}
-          <div className="grid grid-cols-2 gap-4 pt-4 border-t border-zinc-900">
+          <div className="grid grid-cols-2 gap-4 pt-4 border-t theme-border-subtle">
             <div className="flex items-center gap-3">
               <TrendingUp className="w-4 h-4 text-emerald-400" />
               <div>
-                <span className="text-[10px] font-bold text-zinc-500 uppercase block">Estimated Daily Cost</span>
+                <span className="text-[10px] font-bold theme-text-muted uppercase block">Estimated Daily Cost</span>
                 <span className="text-xs font-mono font-bold text-emerald-400">${(usage?.cost || 0.00039).toFixed(5)}</span>
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <Zap className="w-4 h-4 text-amber-500" />
+              <Zap className="w-4 h-4 theme-accent-text" />
               <div>
-                <span className="text-[10px] font-bold text-zinc-500 uppercase block">Vector Model</span>
-                <span className="text-xs font-semibold text-zinc-300">Gemini-text-embedding-004</span>
+                <span className="text-[10px] font-bold theme-text-muted uppercase block">Vector Model</span>
+                <span className="text-xs font-semibold theme-text-secondary">Gemini-text-embedding-004</span>
               </div>
             </div>
           </div>
@@ -229,10 +229,10 @@ export default function BillingPage() {
       {/* Available Plans Tiers Section */}
       <div className="space-y-6">
         <div>
-          <h2 className="text-lg font-extrabold text-white tracking-tight flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-amber-500" /> Available Subscription Plans
+          <h2 className="text-lg font-extrabold theme-text-primary tracking-tight flex items-center gap-2">
+            <Sparkles className="w-5 h-5 theme-accent-text" /> Available Subscription Plans
           </h2>
-          <p className="text-xs text-zinc-400 mt-0.5">
+          <p className="text-xs theme-text-muted mt-0.5">
             Upgrade your intelligence quota to unlock full TAT story evaluations, high-frequency RAG searches, and officer interview simulations.
           </p>
         </div>
@@ -244,16 +244,16 @@ export default function BillingPage() {
             return (
               <div 
                 key={plan.id}
-                className={`p-6 rounded-2xl bg-[#131313] border flex flex-col justify-between relative transition-all duration-200 ${
+                className={`p-6 rounded-2xl theme-bg-card border flex flex-col justify-between relative transition-all duration-200 ${
                   plan.isPopular 
-                    ? 'border-amber-500/60 shadow-2xl shadow-amber-500/5 bg-gradient-to-b from-[#181610] to-[#131313]' 
-                    : 'border-zinc-900 hover:border-zinc-800'
+                    ? 'theme-accent-border shadow-2xl theme-accent-glow' 
+                    : 'theme-border hover:theme-accent-border'
                 }`}
               >
                 {/* Popular Badge */}
                 {plan.badge && (
                   <span className={`absolute -top-3 right-6 px-3 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${
-                    plan.isPopular ? 'bg-amber-500 text-black shadow-md' : 'bg-zinc-800 text-zinc-300'
+                    plan.isPopular ? 'theme-accent-bg shadow-md' : 'theme-bg-input theme-text-secondary'
                   }`}>
                     {plan.badge}
                   </span>
@@ -261,25 +261,25 @@ export default function BillingPage() {
 
                 <div className="space-y-4">
                   <div>
-                    <h3 className="text-base font-bold text-white">{plan.name}</h3>
-                    <p className="text-xs text-zinc-400 mt-1 min-h-[32px]">{plan.description}</p>
+                    <h3 className="text-base font-bold theme-text-primary">{plan.name}</h3>
+                    <p className="text-xs theme-text-muted mt-1 min-h-[32px]">{plan.description}</p>
                   </div>
 
                   {/* Price */}
                   <div className="flex items-baseline gap-1">
-                    <span className="text-3xl font-black text-white">{plan.price}</span>
-                    <span className="text-xs text-zinc-500 font-medium">{plan.period}</span>
+                    <span className="text-3xl font-black theme-text-primary">{plan.price}</span>
+                    <span className="text-xs theme-text-muted font-medium">{plan.period}</span>
                   </div>
 
-                  <div className="p-2.5 rounded-xl bg-zinc-900/80 border border-zinc-800/80 text-xs font-mono font-bold text-amber-400">
+                  <div className="p-2.5 rounded-xl theme-bg-input border theme-border-subtle text-xs font-mono font-bold theme-accent-text">
                     {plan.tokenQuota}
                   </div>
 
                   {/* Features List */}
-                  <ul className="space-y-2.5 pt-2 border-t border-zinc-900 text-xs text-zinc-300">
+                  <ul className="space-y-2.5 pt-2 border-t theme-border-subtle text-xs theme-text-secondary">
                     {plan.features.map((feat, idx) => (
                       <li key={idx} className="flex items-start gap-2.5">
-                        <Check className="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5" />
+                        <Check className="w-4 h-4 theme-accent-text flex-shrink-0 mt-0.5" />
                         <span>{feat}</span>
                       </li>
                     ))}
@@ -290,12 +290,12 @@ export default function BillingPage() {
                 <div className="pt-6 space-y-2">
                   <button
                     onClick={() => setSelectedPlanModal(plan)}
-                    className={`w-full py-3 rounded-xl font-extrabold text-xs transition-all flex items-center justify-center gap-1.5 ${
+                    className={`w-full py-3 rounded-xl font-extrabold text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                       isCurrent
-                        ? 'bg-zinc-800 text-zinc-400 cursor-default border border-zinc-700'
+                        ? 'theme-bg-input theme-text-muted cursor-default border theme-border'
                         : plan.isPopular
-                        ? 'bg-amber-500 hover:bg-amber-400 text-black shadow-lg shadow-amber-500/10 hover:scale-[1.01]'
-                        : 'bg-zinc-800 hover:bg-zinc-700 text-white'
+                        ? 'theme-accent-bg theme-accent-bg-hover shadow-lg theme-accent-glow hover:scale-[1.01]'
+                        : 'theme-bg-input hover:theme-bg-card-hover theme-text-primary border theme-border'
                     }`}
                   >
                     {isCurrent ? (

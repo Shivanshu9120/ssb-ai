@@ -379,7 +379,7 @@ function ChatConsoleInner() {
   ];
 
   return (
-    <div className="flex flex-col h-full bg-[#1e1e1f] text-zinc-100 relative">
+    <div className="flex flex-col h-full theme-bg-app theme-text-primary relative">
       
       {/* PIQ Context Active Banner */}
       {includePIQ && (
@@ -497,7 +497,7 @@ function ChatConsoleInner() {
                       </div>
                     ) : (
                       <div className="relative max-w-[85%] flex flex-col items-end">
-                        <div className="p-3.5 px-4 rounded-2xl text-xs md:text-sm leading-relaxed bg-[#282828] border border-zinc-800 text-zinc-100 rounded-tr-none shadow-sm font-medium">
+                        <div className="p-3.5 px-4 rounded-2xl text-xs md:text-sm leading-relaxed theme-bg-input border theme-border theme-text-primary rounded-tr-none shadow-sm font-medium">
                           {msg.message}
                         </div>
 
@@ -505,7 +505,7 @@ function ChatConsoleInner() {
                         <div className="flex items-center gap-2 mt-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                           <button
                             onClick={() => copyToClipboard(msg.message, msg.id)}
-                            className="p-1 text-zinc-400 hover:text-amber-400 hover:bg-zinc-800/60 rounded transition-colors flex items-center gap-1 text-[11px]"
+                            className="p-1 theme-text-muted hover:theme-accent-text theme-bg-card-hover rounded transition-colors flex items-center gap-1 text-[11px]"
                             title="Copy query"
                           >
                             {copiedId === msg.id ? (
@@ -524,7 +524,7 @@ function ChatConsoleInner() {
                           <button
                             onClick={() => startEditing(msg.id, msg.message)}
                             disabled={isStreaming}
-                            className="p-1 text-zinc-400 hover:text-amber-400 hover:bg-zinc-800/60 rounded transition-colors flex items-center gap-1 text-[11px] disabled:opacity-40"
+                            className="p-1 theme-text-muted hover:theme-accent-text theme-bg-card-hover rounded transition-colors flex items-center gap-1 text-[11px] disabled:opacity-40"
                             title="Edit query"
                           >
                             <Pencil className="w-3.5 h-3.5" />
@@ -542,40 +542,40 @@ function ChatConsoleInner() {
               
               return (
                 <div key={msg.id} className="flex flex-col items-start w-full">
-                  <span className="text-[9px] text-zinc-500 font-bold mb-1 uppercase tracking-wider">
+                  <span className="text-[9px] theme-text-muted font-bold mb-1 uppercase tracking-wider">
                     SSB AI Coach
                   </span>
                   
-                  <div className="w-full max-w-[90%] md:max-w-[85%] bg-[#131313] border border-zinc-900 rounded-2xl rounded-tl-none overflow-hidden shadow-md">
+                  <div className="w-full max-w-[90%] md:max-w-[85%] theme-bg-card border theme-border rounded-2xl rounded-tl-none overflow-hidden shadow-md">
                     {/* Message Tabs Header + Copy Button */}
-                    <div className="flex items-center justify-between border-b border-zinc-900 bg-[#0f0f0f] px-3">
+                    <div className="flex items-center justify-between border-b theme-border-subtle theme-bg-bottom px-3">
                       <div className="flex">
                         <button
                           onClick={() => handleTabChange(msg.id, 'answer')}
-                          className={`py-2.5 px-4 text-xs font-bold transition-all flex items-center gap-1.5 border-b-2 -mb-[1px] ${
+                          className={`py-2.5 px-4 text-xs font-bold transition-all flex items-center gap-1.5 border-b-2 -mb-[1px] cursor-pointer ${
                             activeTab === 'answer'
-                              ? 'border-amber-500 text-amber-500'
-                              : 'border-transparent text-zinc-400 hover:text-zinc-300'
+                              ? 'theme-accent-border theme-accent-text border-b-2'
+                              : 'border-transparent theme-text-muted hover:theme-text-secondary'
                           }`}
                         >
                           Answer
                         </button>
                         <button
                           onClick={() => handleTabChange(msg.id, 'citations')}
-                          className={`py-2.5 px-4 text-xs font-bold transition-all flex items-center gap-1.5 border-b-2 -mb-[1px] ${
+                          className={`py-2.5 px-4 text-xs font-bold transition-all flex items-center gap-1.5 border-b-2 -mb-[1px] cursor-pointer ${
                             activeTab === 'citations'
-                              ? 'border-amber-500 text-amber-500'
-                              : 'border-transparent text-zinc-400 hover:text-zinc-300'
+                              ? 'theme-accent-border theme-accent-text border-b-2'
+                              : 'border-transparent theme-text-muted hover:theme-text-secondary'
                           }`}
                         >
                           Related Content
                         </button>
                         <button
                           onClick={() => handleTabChange(msg.id, 'steps')}
-                          className={`py-2.5 px-4 text-xs font-bold transition-all flex items-center gap-1.5 border-b-2 -mb-[1px] ${
+                          className={`py-2.5 px-4 text-xs font-bold transition-all flex items-center gap-1.5 border-b-2 -mb-[1px] cursor-pointer ${
                             activeTab === 'steps'
-                              ? 'border-amber-500 text-amber-500'
-                              : 'border-transparent text-zinc-400 hover:text-zinc-300'
+                              ? 'theme-accent-border theme-accent-text border-b-2'
+                              : 'border-transparent theme-text-muted hover:theme-text-secondary'
                           }`}
                         >
                           Steps
@@ -585,7 +585,7 @@ function ChatConsoleInner() {
                       {/* Copy Response Button */}
                       <button
                         onClick={() => copyToClipboard(msg.message, msg.id)}
-                        className="py-1 px-2.5 text-[11px] text-zinc-400 hover:text-amber-400 hover:bg-zinc-800/60 rounded-md transition-colors flex items-center gap-1.5 font-medium"
+                        className="py-1 px-2.5 text-[11px] theme-text-muted hover:theme-accent-text theme-bg-card-hover rounded-md transition-colors flex items-center gap-1.5 font-medium cursor-pointer"
                         title="Copy response"
                       >
                         {copiedId === msg.id ? (
@@ -603,11 +603,11 @@ function ChatConsoleInner() {
                     </div>
 
                     {/* Message Tabs Body */}
-                    <div className="p-4 md:p-5 text-xs md:text-sm leading-relaxed text-zinc-200">
+                    <div className="p-4 md:p-5 text-xs md:text-sm leading-relaxed theme-text-primary">
                       
                       {/* TAB 1: Answer */}
                       {activeTab === 'answer' && (
-                        <div className="whitespace-pre-wrap font-medium text-zinc-300">
+                        <div className="whitespace-pre-wrap font-medium theme-text-secondary">
                           {msg.message}
                         </div>
                       )}
@@ -617,24 +617,24 @@ function ChatConsoleInner() {
                         <div className="space-y-3.5">
                           {hasCitations ? (
                             <div className="grid gap-2.5">
-                              <span className="block text-[10px] text-zinc-500 uppercase font-bold tracking-wider">Matched RAG Citations</span>
+                              <span className="block text-[10px] theme-text-muted uppercase font-bold tracking-wider">Matched RAG Citations</span>
                               {citations.map((cite, idx) => {
                                 const displayTitle = cite.title || 'Referenced Documentation';
                                 const topicBadge = cite.topic ? (cite.topic.charAt(0).toUpperCase() + cite.topic.slice(1)).replace(/_/g, ' ') : 'SSB Material';
                                 return (
-                                  <div key={idx} className="p-3 rounded-xl border border-zinc-900 bg-[#181818]/60 space-y-1.5 hover:border-zinc-800 transition-colors">
+                                  <div key={idx} className="p-3 rounded-xl border theme-border theme-bg-input space-y-1.5 hover:theme-accent-border transition-colors">
                                     <div className="flex items-center justify-between">
                                       <div className="flex items-center gap-2">
-                                        <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-amber-500/10 border border-amber-500/20 text-amber-500 text-[9px] font-bold">
+                                        <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-[var(--theme-accent-bg-subtle)] border theme-accent-border theme-accent-text text-[9px] font-bold">
                                           Ref [{idx + 1}]
                                         </span>
-                                        <span className="px-2 py-0.5 rounded bg-zinc-800/80 text-amber-400/90 border border-zinc-700/40 text-[9px] font-bold uppercase tracking-wider">
+                                        <span className="px-2 py-0.5 rounded theme-bg-card theme-accent-text border theme-border-subtle text-[9px] font-bold uppercase tracking-wider">
                                           {topicBadge}
                                         </span>
                                       </div>
-                                      <span className="text-[10px] text-zinc-400 font-semibold">Page {cite.page || 1}</span>
+                                      <span className="text-[10px] theme-text-muted font-semibold">Page {cite.page || 1}</span>
                                     </div>
-                                    <h4 className="font-bold text-xs text-zinc-100 mt-1 leading-snug">
+                                    <h4 className="font-bold text-xs theme-text-primary mt-1 leading-snug">
                                       {displayTitle}
                                     </h4>
                                   </div>
@@ -642,7 +642,7 @@ function ChatConsoleInner() {
                               })}
                             </div>
                           ) : (
-                            <div className="text-center py-6 text-zinc-500 text-xs">
+                            <div className="text-center py-6 theme-text-muted text-xs">
                               {isLastMessage ? 'No vector documents retrieved for this prompt.' : 'Citations archived for this conversation.'}
                             </div>
                           )}
@@ -652,14 +652,14 @@ function ChatConsoleInner() {
                       {/* TAB 3: Steps */}
                       {activeTab === 'steps' && (
                         <div className="space-y-3">
-                          <span className="block text-[10px] text-zinc-500 uppercase font-bold tracking-wider mb-1">Reasoning Pipeline</span>
-                          <div className="space-y-2 border-l border-zinc-800 ml-1.5 pl-3.5">
+                          <span className="block text-[10px] theme-text-muted uppercase font-bold tracking-wider mb-1">Reasoning Pipeline</span>
+                          <div className="space-y-2 border-l theme-border ml-1.5 pl-3.5">
                             {getPipelineSteps(isLastMessage ? tokenMetrics : null).map((step, idx) => (
                               <div key={idx} className="relative">
                                 {/* Bullet indicator */}
-                                <div className="absolute -left-[20px] top-1.5 w-2 h-2 rounded-full bg-amber-500/60 border border-[#131313]" />
-                                <span className="font-bold text-zinc-200 text-xs block">{step.name}</span>
-                                <span className="text-[10px] text-zinc-500 block mt-0.5 leading-normal">{step.desc}</span>
+                                <div className="absolute -left-[20px] top-1.5 w-2 h-2 rounded-full theme-accent-bg border theme-border" />
+                                <span className="font-bold theme-text-primary text-xs block">{step.name}</span>
+                                <span className="text-[10px] theme-text-muted block mt-0.5 leading-normal">{step.desc}</span>
                               </div>
                             ))}
                           </div>
@@ -675,19 +675,19 @@ function ChatConsoleInner() {
             {/* Streaming & Processing Message Card */}
             {isStreaming && (
               <div className="flex flex-col items-start w-full">
-                <span className="text-[9px] text-zinc-500 font-bold mb-1 uppercase tracking-wider">
+                <span className="text-[9px] theme-text-muted font-bold mb-1 uppercase tracking-wider">
                   SSB AI Coach ({!streamingMessage ? 'thinking...' : 'typing...'})
                 </span>
-                <div className="w-full max-w-[90%] md:max-w-[85%] bg-[#131313] border border-amber-500/20 rounded-2xl rounded-tl-none overflow-hidden shadow-lg">
-                  <div className="flex items-center justify-between border-b border-zinc-900 bg-[#0f0f0f] px-3.5 py-2">
-                    <div className="flex items-center gap-2 text-xs font-bold text-amber-500">
-                      <Loader2 className="w-4 h-4 animate-spin text-amber-500" />
+                <div className="w-full max-w-[90%] md:max-w-[85%] theme-bg-card border theme-accent-border rounded-2xl rounded-tl-none overflow-hidden shadow-lg">
+                  <div className="flex items-center justify-between border-b theme-border-subtle theme-bg-bottom px-3.5 py-2">
+                    <div className="flex items-center gap-2 text-xs font-bold theme-accent-text">
+                      <Loader2 className="w-4 h-4 animate-spin theme-accent-text" />
                       <span>{!streamingMessage ? 'Processing query' : 'Answer'}</span>
                     </div>
                     {streamingMessage && (
                       <button
                         onClick={() => copyToClipboard(streamingMessage, 'streaming-active')}
-                        className="py-1 px-2.5 text-[11px] text-zinc-400 hover:text-amber-400 hover:bg-zinc-800/60 rounded-md transition-colors flex items-center gap-1.5 font-medium"
+                        className="py-1 px-2.5 text-[11px] theme-text-muted hover:theme-accent-text theme-bg-card-hover rounded-md transition-colors flex items-center gap-1.5 font-medium cursor-pointer"
                         title="Copy response"
                       >
                         {copiedId === 'streaming-active' ? (
@@ -705,21 +705,21 @@ function ChatConsoleInner() {
                     )}
                   </div>
 
-                  <div className="p-4 md:p-5 text-xs md:text-sm leading-relaxed text-zinc-300 font-medium">
+                  <div className="p-4 md:p-5 text-xs md:text-sm leading-relaxed theme-text-secondary font-medium">
                     {!streamingMessage ? (
                       <div className="flex flex-col gap-2 py-1">
-                        <div className="flex items-center gap-2.5 text-amber-400 font-semibold text-xs">
-                          <span className="w-2 h-2 rounded-full bg-amber-500 animate-ping flex-shrink-0" />
+                        <div className="flex items-center gap-2.5 theme-accent-text font-semibold text-xs">
+                          <span className="w-2 h-2 rounded-full theme-accent-bg animate-ping flex-shrink-0" />
                           <span>{processingStatements[processingIndex]}</span>
                         </div>
-                        <p className="text-[11px] text-zinc-500 leading-relaxed">
+                        <p className="text-[11px] theme-text-muted leading-relaxed">
                           Searching vector store, evaluating candidate context & synthesizing answer...
                         </p>
                       </div>
                     ) : (
                       <div className="whitespace-pre-wrap">
                         {streamingMessage}
-                        <span className="inline-block w-1.5 h-3 bg-amber-500 ml-1 animate-pulse" />
+                        <span className="inline-block w-1.5 h-3 theme-accent-bg ml-1 animate-pulse" />
                       </div>
                     )}
                   </div>
@@ -735,7 +735,7 @@ function ChatConsoleInner() {
       {showScrollBottom && (
         <button
           onClick={scrollToBottom}
-          className="fixed bottom-28 right-8 z-30 w-9 h-9 rounded-full bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/20 text-amber-500 flex items-center justify-center transition-all shadow-md backdrop-blur-sm hover:scale-105 cursor-pointer"
+          className="fixed bottom-28 right-8 z-30 w-9 h-9 rounded-full bg-[var(--theme-accent-bg-subtle)] hover:bg-[var(--theme-accent-bg-subtle)] border theme-accent-border theme-accent-text flex items-center justify-center transition-all shadow-md backdrop-blur-sm hover:scale-105 cursor-pointer"
           title="Scroll down"
         >
           <ArrowDown className="w-4 h-4" />
@@ -743,9 +743,9 @@ function ChatConsoleInner() {
       )}
 
       {/* Bottom Floating Chat Input Area */}
-      <div className="p-4 border-t border-zinc-900/60 bg-[#1e1e1f] flex-shrink-0">
+      <div className="p-4 border-t theme-border theme-bg-app flex-shrink-0">
         <form onSubmit={handleSendMessage} className="max-w-4xl mx-auto">
-          <div className="bg-[#131313] border border-zinc-900 rounded-2xl shadow-lg p-2.5 flex flex-col focus-within:border-amber-500/30 transition-colors">
+          <div className="theme-bg-card border theme-border rounded-2xl shadow-lg p-2.5 flex flex-col focus-within:theme-accent-border transition-colors">
             
             {/* Input field */}
             <input
@@ -754,11 +754,11 @@ function ChatConsoleInner() {
               onChange={(e) => setInputMessage(e.target.value)}
               disabled={isStreaming}
               placeholder={isStreaming ? "Awaiting assistant response..." : "Ask anything..."}
-              className="px-3 py-2 bg-transparent text-zinc-100 text-sm focus:outline-none disabled:text-zinc-600 placeholder-zinc-600"
+              className="px-3 py-2 bg-transparent theme-text-primary text-sm focus:outline-none disabled:theme-text-muted placeholder:theme-text-muted"
             />
             
             {/* Tools footer bar inside container */}
-            <div className="flex items-center justify-between pt-2 px-1 border-t border-zinc-900/60 mt-1 select-none">
+            <div className="flex items-center justify-between pt-2 px-1 border-t theme-border-subtle mt-1 select-none">
               
               {/* Left utility icons */}
               <div className="flex items-center gap-1.5 relative">
@@ -871,7 +871,7 @@ function ChatConsoleInner() {
               <button
                 type="submit"
                 disabled={isStreaming || !inputMessage.trim()}
-                className="w-8 h-8 rounded-full bg-[#f0a924] hover:bg-[#e09b1f] disabled:bg-zinc-800 disabled:text-zinc-600 text-black flex items-center justify-center transition-all hover:scale-105"
+                className="w-8 h-8 rounded-full theme-accent-bg theme-accent-bg-hover disabled:theme-bg-input disabled:theme-text-muted flex items-center justify-center transition-all hover:scale-105 cursor-pointer"
               >
                 {isStreaming ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
