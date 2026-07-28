@@ -732,7 +732,7 @@ function ChatConsoleInner() {
       {showScrollBottom && (
         <button
           onClick={scrollToBottom}
-          className="fixed bottom-28 right-8 z-30 w-9 h-9 rounded-full bg-[var(--theme-accent-bg-subtle)] hover:bg-[var(--theme-accent-bg-subtle)] border theme-accent-border theme-accent-text flex items-center justify-center transition-all shadow-md backdrop-blur-sm hover:scale-105 cursor-pointer"
+          className="fixed bottom-24 md:bottom-28 right-6 md:right-8 z-30 w-9 h-9 rounded-full bg-[var(--theme-accent-bg-subtle)] hover:bg-[var(--theme-accent-bg-subtle)] border theme-accent-border theme-accent-text flex items-center justify-center transition-all shadow-md backdrop-blur-sm hover:scale-105 cursor-pointer"
           title="Scroll down"
         >
           <ArrowDown className="w-4 h-4" />
@@ -740,7 +740,7 @@ function ChatConsoleInner() {
       )}
 
       {/* Bottom Floating Chat Input Area */}
-      <div className="p-4 border-t theme-border theme-bg-app flex-shrink-0">
+      <div className="p-2.5 sm:p-4 border-t theme-border theme-bg-app flex-shrink-0">
         <form onSubmit={handleSendMessage} className="max-w-4xl mx-auto">
           <div className="theme-bg-card border theme-border rounded-2xl shadow-lg p-2.5 flex flex-col focus-within:theme-accent-border transition-colors">
             

@@ -471,7 +471,7 @@ function DashboardLayoutInner({
         </header>
 
         {/* Content body container */}
-        <main className="flex-1 min-h-0 overflow-y-auto relative pb-20 md:pb-0">
+        <main className="flex-1 min-h-0 overflow-y-auto relative pb-14 md:pb-0">
           {children}
         </main>
       </div>

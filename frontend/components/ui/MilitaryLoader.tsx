@@ -131,22 +131,34 @@ export function MilitaryLoader({
       </div>
 
       {/* ===== FOUR CORNER HUD BRACKETS ===== */}
-      <div className="absolute top-6 left-6 flex items-center gap-2 text-[10px] font-mono theme-text-muted opacity-80 border-t-2 border-l-2 theme-accent-border pt-2 pl-2">
-        <Shield className="w-3.5 h-3.5 theme-accent-text" />
-        <span className="tracking-widest font-extrabold uppercase">SYS.SYS // 28.6139° N 77.2090° E</span>
+      <div className="absolute top-3 left-3 sm:top-6 sm:left-6 flex items-center gap-1.5 sm:gap-2 text-[8px] sm:text-[10px] font-mono theme-text-muted opacity-80 border-t-2 border-l-2 theme-accent-border pt-1 pl-1.5 sm:pt-2 sm:pl-2 max-w-[42%] sm:max-w-none">
+        <Shield className="w-3 h-3 sm:w-3.5 sm:h-3.5 theme-accent-text flex-shrink-0" />
+        <span className="tracking-wider sm:tracking-widest font-extrabold uppercase truncate">
+          <span className="hidden sm:inline">SYS.SYS // 28.6139° N 77.2090° E</span>
+          <span className="sm:hidden">SYS.SYS // 28.61° N</span>
+        </span>
       </div>
 
-      <div className="absolute top-6 right-6 flex items-center gap-2 text-[10px] font-mono theme-text-muted opacity-80 border-t-2 border-r-2 theme-accent-border pt-2 pr-2 text-right">
-        <span className="tracking-widest font-extrabold uppercase">DEFENSE CLASS // CONFIDENTIAL</span>
-        <Radio className="w-3.5 h-3.5 theme-accent-text" />
+      <div className="absolute top-3 right-3 sm:top-6 sm:right-6 flex items-center gap-1.5 sm:gap-2 text-[8px] sm:text-[10px] font-mono theme-text-muted opacity-80 border-t-2 border-r-2 theme-accent-border pt-1 pr-1.5 sm:pt-2 sm:pr-2 text-right justify-end max-w-[42%] sm:max-w-none">
+        <span className="tracking-wider sm:tracking-widest font-extrabold uppercase truncate">
+          <span className="hidden sm:inline">DEFENSE CLASS // CONFIDENTIAL</span>
+          <span className="sm:hidden">CONFIDENTIAL</span>
+        </span>
+        <Radio className="w-3 h-3 sm:w-3.5 sm:h-3.5 theme-accent-text flex-shrink-0" />
       </div>
 
-      <div className="absolute bottom-6 left-6 text-[10px] font-mono theme-text-muted opacity-80 border-b-2 border-l-2 theme-accent-border pb-2 pl-2">
-        <span className="tracking-widest font-extrabold uppercase">SECURE LINK: ENCRYPTED (AES-256)</span>
+      <div className="absolute bottom-3 left-3 sm:bottom-6 sm:left-6 text-[8px] sm:text-[10px] font-mono theme-text-muted opacity-80 border-b-2 border-l-2 theme-accent-border pb-1 pl-1.5 sm:pb-2 sm:pl-2 max-w-[42%] sm:max-w-none">
+        <span className="tracking-wider sm:tracking-widest font-extrabold uppercase truncate">
+          <span className="hidden sm:inline">SECURE LINK: ENCRYPTED (AES-256)</span>
+          <span className="sm:hidden">SECURE LINK: ENCRYPTED</span>
+        </span>
       </div>
 
-      <div className="absolute bottom-6 right-6 text-[10px] font-mono theme-text-muted opacity-80 border-b-2 border-r-2 theme-accent-border pb-2 pr-2 text-right">
-        <span className="tracking-widest font-extrabold uppercase">INDIAN ARMED FORCES SSB ENGINE</span>
+      <div className="absolute bottom-3 right-3 sm:bottom-6 sm:right-6 text-[8px] sm:text-[10px] font-mono theme-text-muted opacity-80 border-b-2 border-r-2 theme-accent-border pb-1 pr-1.5 sm:pb-2 sm:pr-2 text-right max-w-[42%] sm:max-w-none">
+        <span className="tracking-wider sm:tracking-widest font-extrabold uppercase truncate">
+          <span className="hidden sm:inline">INDIAN ARMED FORCES SSB ENGINE</span>
+          <span className="sm:hidden">SSB ENGINE</span>
+        </span>
       </div>
 
       {/* ===== CENTRAL TACTICAL RADAR HUD DISPLAY ===== */}
