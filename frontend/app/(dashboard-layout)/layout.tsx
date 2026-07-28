@@ -534,10 +534,10 @@ function DashboardLayoutInner({
       <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#131313]/95 backdrop-blur-lg border-t border-zinc-800/80 px-2 py-2 flex items-center justify-around">
         {[
           { name: 'Home', href: '/dashboard', icon: Home },
-          { name: 'Timeline', href: '/timeline', icon: Calendar },
           { name: 'Study', href: '/study', icon: BookOpen },
+          { name: 'Ask', href: '/chat', icon: MessageSquare },
+          { name: 'PIQ', href: '/piq', icon: FileText },
           { name: 'Profile', href: '/profile', icon: User },
-          { name: 'Billing', href: '/billing', icon: CreditCard },
         ].map((item) => {
           const ItemIcon = item.icon;
           const active = isNavActive(item.href);

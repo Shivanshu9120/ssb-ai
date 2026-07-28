@@ -162,7 +162,7 @@ export default function Dashboard() {
   const tokenQuotaPercent = Math.min(100, (todayUsage.total_tokens / 100000) * 100);
 
   return (
-    <div className="p-5 lg:p-8 max-w-7xl mx-auto space-y-8 select-none">
+    <div className="px-4 py-5 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-8 select-none">
       
       {/* Welcome & Overview section */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 rounded-2xl theme-bg-card border theme-border shadow-md">
@@ -334,17 +334,17 @@ export default function Dashboard() {
                   <Link
                     key={chat.id}
                     href={`/chat?id=${chat.id}`}
-                    className="p-4 rounded-xl border theme-border theme-bg-card hover:theme-bg-card-hover flex items-center justify-between transition-all group shadow-sm hover:scale-[1.005]"
+                    className="p-3.5 sm:p-4 rounded-xl border theme-border theme-bg-card hover:theme-bg-card-hover flex items-center justify-between transition-all group shadow-sm hover:scale-[1.005] w-full min-w-0"
                   >
-                    <div className="flex items-center gap-3 overflow-hidden">
+                    <div className="flex items-center gap-3 overflow-hidden min-w-0 flex-1 mr-2">
                       <div className="w-8 h-8 rounded-lg bg-[var(--theme-accent-bg-subtle)] border theme-accent-border flex items-center justify-center theme-accent-text flex-shrink-0">
                         <MessageSquare className="w-4 h-4" />
                       </div>
-                      <div className="overflow-hidden">
+                      <div className="overflow-hidden min-w-0 flex-1">
                         <h4 className="font-bold text-sm theme-text-secondary group-hover:theme-text-primary transition-colors truncate">
                           {chat.title || 'Untitled Chat'}
                         </h4>
-                        <span className="text-[10px] theme-text-muted font-semibold block mt-0.5">
+                        <span className="text-[10px] theme-text-muted font-semibold block mt-0.5 truncate">
                           Created: {new Date(chat.created_at).toLocaleDateString()}
                         </span>
                       </div>
