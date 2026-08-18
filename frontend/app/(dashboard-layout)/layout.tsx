@@ -28,7 +28,8 @@ import {
   Palette,
   Anchor,
   Shield,
-  Plane
+  Plane,
+  MapPin
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { useChat } from '@/context/ChatContext';
@@ -123,6 +124,7 @@ function DashboardLayoutInner({
     { name: 'Study', href: '/study', icon: BookOpen },
     { name: 'PIQ Form', href: '/piq', icon: FileText },
     { name: 'Profile', href: '/profile', icon: User },
+    { name: 'SSB Centres', href: '/centres', icon: MapPin },
     { name: 'Billing', href: '/billing', icon: CreditCard },
   ];
 
@@ -141,6 +143,7 @@ function DashboardLayoutInner({
     if (pathname.startsWith('/study')) return 'Study Hub';
     if (pathname.startsWith('/profile')) return 'Candidate Profile';
     if (pathname.startsWith('/piq')) return 'PIQ Questionnaire';
+    if (pathname.startsWith('/centres')) return 'SSB Centres & Accommodations';
     if (pathname.startsWith('/billing')) return 'Billing & Subscription';
     return 'Sea Master';
   };
