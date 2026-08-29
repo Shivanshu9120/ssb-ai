@@ -48,6 +48,9 @@ export default function Navbar() {
           <Link href="/" className="hover:text-emerald-400 transition-colors">
             Home
           </Link>
+          <Link href="/community" className="hover:text-emerald-400 text-amber-400 transition-colors font-extrabold flex items-center gap-1">
+            ✨ Community
+          </Link>
           <Link href="/about" className="hover:text-emerald-400 transition-colors">
             About
           </Link>

@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const PUBLIC_ROUTES = ['/', '/login', '/signup', '/about', '/contact', '/terms', '/privacy', '/disclaimer'];
+  const PUBLIC_ROUTES = ['/', '/community', '/login', '/signup', '/about', '/contact', '/terms', '/privacy', '/disclaimer'];
   const isPublicRoute = PUBLIC_ROUTES.some(route => pathname === route || (route !== '/' && pathname.startsWith(route)));
 
   const fetchProfile = async () => {

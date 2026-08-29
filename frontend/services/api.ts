@@ -18,6 +18,22 @@ async function getHeaders(isMultipart = false) {
   return headers;
 }
 
+async function getOptionalHeaders() {
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  };
+  try {
+    const { data } = await supabase.auth.getSession();
+    if (data.session?.access_token) {
+      headers['Authorization'] = `Bearer ${data.session.access_token}`;
+    }
+  } catch (e) {
+    // Unauthenticated caller
+  }
+  return headers;
+}
+
+
 // ---------------------------------------------------------------------------
 // PIQ Data Types
 // ---------------------------------------------------------------------------
@@ -138,10 +154,26 @@ export interface PIQData {
   level?: string;
 }
 
+export interface FeedPost {
+  id: string;
+  user_id: string;
+  author_name: string;
+  author_initials: string;
+  title: string;
+  content: string;
+  category: string;
+  upvotes: number;
+  downvotes: number;
+  score: number;
+  user_vote: number; // 1 = upvoted, -1 = downvoted, 0 = none
+  created_at: string;
+}
+
 // ---------------------------------------------------------------------------
 // Legacy profile input (kept for backward compat if needed)
 // ---------------------------------------------------------------------------
 export interface UserProfileInput {
+
   exam: string;
   branch?: string;
   attempt: number;
@@ -451,4 +483,62 @@ export const apiService = {
       callbacks.onError(error?.message || 'Network error encountered.');
     }
   },
+
+  // ---------------------------------------------------------------------------
+  // Community Feed & Reactions
+  // ---------------------------------------------------------------------------
+  async getFeedPosts(category?: string, offset = 0, limit = 30): Promise<FeedPost[]> {
+    const url = new URL(`${API_BASE_URL}/api/feed`);
+    if (category && category.toLowerCase() !== 'all') {
+      url.searchParams.append('category', category);
+    }
+    url.searchParams.append('offset', offset.toString());
+    url.searchParams.append('limit', limit.toString());
+
+    const res = await fetch(url.toString(), {
+      headers: await getOptionalHeaders(),
+    });
+    if (!res.ok) {
+      throw new Error('Failed to fetch community feed posts');
+    }
+    return res.json();
+  },
+
+  async createFeedPost(data: { title: string; content: string; category?: string }): Promise<FeedPost> {
+    const res = await fetch(`${API_BASE_URL}/api/feed`, {
+      method: 'POST',
+      headers: await getHeaders(),
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'Failed to post to community feed');
+    }
+    return res.json();
+  },
+
+  async deleteFeedPost(postId: string): Promise<void> {
+    const res = await fetch(`${API_BASE_URL}/api/feed/${postId}`, {
+      method: 'DELETE',
+      headers: await getHeaders(),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'Failed to delete post');
+    }
+  },
+
+  async voteFeedPost(postId: string, voteType: 1 | -1): Promise<{ post_id: string; upvotes: number; downvotes: number; score: number; user_vote: number }> {
+    const res = await fetch(`${API_BASE_URL}/api/feed/${postId}/vote`, {
+      method: 'POST',
+      headers: await getHeaders(),
+      body: JSON.stringify({ vote_type: voteType }),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'Failed to vote on post');
+    }
+    return res.json();
+  },
 };
+

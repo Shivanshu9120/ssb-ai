@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
-from app.api import user, chat, usage, admin, piq_extract
+from app.api import user, chat, usage, admin, piq_extract, feed
 from app.database.connection import engine
 from sqlmodel import SQLModel
 from sqlalchemy import text
@@ -27,6 +27,8 @@ app.include_router(piq_extract.router, prefix="/api")
 app.include_router(chat.router, prefix="/api")
 app.include_router(usage.router, prefix="/api")
 app.include_router(admin.router, prefix="/api")
+app.include_router(feed.router, prefix="/api")
+
 
 @app.get("/api/health")
 def health_check():

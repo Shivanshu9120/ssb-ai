@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import Footer from '@/components/Footer';
+import LandingFeedSection from '@/components/LandingFeedSection';
 
 /* ─────────────────────────── JET SVG ─────────────────────────── */
 function JetSVG({ style }: { style?: React.CSSProperties }) {
@@ -586,6 +587,9 @@ function HeroWalkthroughMockup() {
 
         <div className="absolute bottom-0 left-0 right-0 h-24 pointer-events-none" style={{ background: 'linear-gradient(to bottom, transparent, #0a0f0a)' }} />
       </section>
+
+      {/* ──────── COMMUNITY EXPERIENCE FEED PREVIEW ──────── */}
+      <LandingFeedSection />
 
       {/* ──────── THREE SERVICES ──────── */}
       <section id="services" className="py-24 relative overflow-hidden">

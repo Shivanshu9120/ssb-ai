@@ -178,3 +178,27 @@ class Usage(SQLModel, table=True):
     cost: float = Field(default=0.0)
 
     user: Optional[User] = Relationship(back_populates="usages")
+
+
+class FeedPost(SQLModel, table=True):
+    __tablename__ = "feed_posts"
+
+    id: UUID = Field(default_factory=uuid4, primary_key=True)
+    user_id: UUID = Field(foreign_key="users.id", nullable=False)
+    title: str = Field(nullable=False)
+    content: str = Field(nullable=False)
+    category: str = Field(default="Personal Experience")
+    is_hidden: bool = Field(default=False)
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+
+
+class PostReaction(SQLModel, table=True):
+    __tablename__ = "post_reactions"
+
+    id: UUID = Field(default_factory=uuid4, primary_key=True)
+    post_id: UUID = Field(foreign_key="feed_posts.id", nullable=False)
+    user_id: UUID = Field(foreign_key="users.id", nullable=False)
+    vote_type: int = Field(nullable=False)  # +1 for upvote, -1 for downvote
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+
