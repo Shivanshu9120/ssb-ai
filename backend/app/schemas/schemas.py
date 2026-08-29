@@ -305,3 +305,44 @@ class UsageResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+# ---------------------------------------------------------------------------
+# Feed & Reactions schemas
+# ---------------------------------------------------------------------------
+
+class FeedPostCreate(BaseModel):
+    title: str
+    content: str
+    category: Optional[str] = "Personal Experience"
+
+
+class VoteRequest(BaseModel):
+    vote_type: int  # 1 for upvote, -1 for downvote
+
+
+class FeedPostResponse(BaseModel):
+    id: UUID
+    user_id: UUID
+    author_name: str
+    author_initials: str
+    title: str
+    content: str
+    category: str
+    upvotes: int
+    downvotes: int
+    score: int
+    user_vote: int  # 1 if current user upvoted, -1 if downvoted, 0 otherwise
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+class VoteResponse(BaseModel):
+    post_id: UUID
+    upvotes: int
+    downvotes: int
+    score: int
+    user_vote: int
+

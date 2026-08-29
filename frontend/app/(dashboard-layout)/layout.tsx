@@ -30,7 +30,8 @@ import {
   Shield,
   Plane,
   MapPin,
-  Medal
+  Medal,
+  Users
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { useChat } from '@/context/ChatContext';
@@ -121,6 +122,7 @@ function DashboardLayoutInner({
   // Nav items configuration
   const navigationItems = [
     { name: 'Home', href: '/dashboard', icon: Home },
+    { name: 'Community Feed', href: '/feed', icon: Users },
     { name: 'Timeline', href: '/timeline', icon: Calendar },
     { name: 'Study', href: '/study', icon: BookOpen },
     { name: 'PIQ Form', href: '/piq', icon: FileText },
@@ -140,6 +142,7 @@ function DashboardLayoutInner({
 
   const getPageTitle = () => {
     if (pathname.startsWith('/dashboard')) return 'Dashboard';
+    if (pathname.startsWith('/feed')) return 'Community Feed';
     if (pathname.startsWith('/chat')) return 'SSB Mentor Room';
     if (pathname.startsWith('/timeline')) return 'SSB Journey Timeline';
     if (pathname.startsWith('/study')) return 'Study Hub';
@@ -540,6 +543,7 @@ function DashboardLayoutInner({
       <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#131313]/95 backdrop-blur-lg border-t border-zinc-800/80 px-2 py-2 flex items-center justify-around">
         {[
           { name: 'Home', href: '/dashboard', icon: Home },
+          { name: 'Feed', href: '/feed', icon: Users },
           { name: 'Study', href: '/study', icon: BookOpen },
           { name: 'Ask', href: '/chat', icon: MessageSquare },
           { name: 'PIQ', href: '/piq', icon: FileText },
