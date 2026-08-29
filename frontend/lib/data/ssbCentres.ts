@@ -490,8 +490,7 @@ export const SSB_CENTRES: SSBCentre[] = [
     boards: [
       { id: '20-ssb', name: '20 SSB', code: '20 SSB' },
       { id: '21-ssb', name: '21 SSB', code: '21 SSB' },
-      { id: '22-ssb', name: '22 SSB', code: '22 SSB' },
-      { id: '23-ssb', name: '23 SSB', code: '23 SSB' }
+      { id: '22-ssb', name: '22 SSB', code: '22 SSB' }
     ],
     stays: [
       {
@@ -575,6 +574,19 @@ export const SSB_CENTRES: SSBCentre[] = [
         verified: true,
         badges: ['Closest', 'Budget'],
         notes: 'Located very close to reporting gate.'
+      },
+      {
+        id: 'scn-kap-stay-4',
+        name: 'Sainik Rest House Jalandhar Cantt',
+        price: 150,
+        priceUnit: 'person',
+        priceNotes: '₹150/person',
+        distance: '~20 km (Jalandhar arrival point)',
+        distanceMeters: 20000,
+        googleMapsUrl: 'https://maps.google.com/?q=Sainik+Rest+House+Jalandhar+Cantt',
+        verified: true,
+        badges: ['Budget'],
+        notes: 'Safe military rest house near Jalandhar Cantt station for candidates arriving via Jalandhar.'
       }
     ]
   },
@@ -589,7 +601,7 @@ export const SSB_CENTRES: SSBCentre[] = [
     googleMapsUrl: 'https://maps.google.com/?q=Selection+Centre+South+Cubbon+Road+Bengaluru',
     reportingNotes: 'Cubbon Road, Bengaluru Cantt. MCO at Bangalore City / Cantt station.',
     boards: [
-      { id: '12-ssb', name: '12 SSB', code: '12 SSB' },
+      { id: '17-ssb', name: '17 SSB', code: '17 SSB' },
       { id: '24-ssb', name: '24 SSB', code: '24 SSB' }
     ],
     stays: [
@@ -631,49 +643,6 @@ export const SSB_CENTRES: SSBCentre[] = [
         verified: true,
         badges: ['Budget', 'Call before booking'],
         notes: 'For children/dependents of ex-servicemen or serving personnel. Valid ID required.'
-      }
-    ]
-  },
-  {
-    id: 'army-scn-jalandhar',
-    service: 'Army',
-    centre: 'Selection Centre North — Jalandhar',
-    centreCode: 'SCN Jalandhar',
-    city: 'Jalandhar',
-    state: 'Punjab',
-    coordinates: { lat: 31.3260, lng: 75.5762 },
-    googleMapsUrl: 'https://maps.google.com/?q=Selection+Centre+North+Jalandhar+Cantt',
-    reportingNotes: 'Jalandhar Cantt Railway Station MCO.',
-    boards: [
-      { id: '33-ssb-army', name: '33 SSB (Army)', code: '33 SSB' }
-    ],
-    stays: [
-      {
-        id: 'scn-jal-stay-1',
-        name: 'Sainik Rest House Jalandhar Cantt',
-        price: 150,
-        priceUnit: 'person',
-        priceNotes: '₹150/person',
-        distance: '~1 km from centre',
-        distanceMeters: 1000,
-        googleMapsUrl: 'https://maps.google.com/?q=Sainik+Rest+House+Jalandhar+Cantt',
-        verified: true,
-        badges: ['Budget', 'Recommended'],
-        notes: 'Safe military rest house near Jalandhar Cantt station.'
-      },
-      {
-        id: 'scn-jal-stay-2',
-        name: 'Hotel Green Park Jalandhar',
-        price: 500,
-        priceMax: 700,
-        priceUnit: 'person',
-        priceNotes: '₹500–700/person',
-        distance: '~1.5 km from centre',
-        distanceMeters: 1500,
-        googleMapsUrl: 'https://maps.google.com/?q=Hotel+Green+Park+Jalandhar',
-        verified: true,
-        badges: ['Budget'],
-        notes: 'Comfortable lodge near Cantt railway station.'
       }
     ]
   },

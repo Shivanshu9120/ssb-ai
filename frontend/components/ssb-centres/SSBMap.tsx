@@ -323,6 +323,24 @@ export default function SSBMap({
     });
   }, [userLocation]);
 
+  // Handle Map Container Resize
+  useEffect(() => {
+    const container = mapRef.current;
+    if (!container || typeof window === 'undefined') return;
+
+    const resizeObserver = new ResizeObserver(() => {
+      if (leafletMapInstance.current) {
+        leafletMapInstance.current.invalidateSize();
+      }
+    });
+
+    resizeObserver.observe(container);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, []);
+
   return (
     <div className="relative w-full h-full min-h-[350px] md:min-h-full rounded-2xl overflow-hidden border theme-border shadow-xl">
       <div id="ssb-map-container" ref={mapRef} className="w-full h-full z-10" />
